@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Share Eat</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="Categories">
+        <item>Italian</item>
+        <item>Asian</item>
+        <item>Spicy</item>
+        <item>Fish</item>
+        <item>Meat</item>
+        <item>Dairy</item>
+        <item>Desert</item>
+        <item>Kosher</item>
+    </string-array>
 </resources>

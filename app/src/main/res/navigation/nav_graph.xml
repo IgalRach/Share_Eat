@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/allPosts">
+
+    <fragment
+        android:id="@+id/allPosts"
+        android:name="com.example.shareeat.AllPosts"
+        android:label="fragment_all_posts"
+        tools:layout="@layout/fragment_all_posts" >
+        <action
+            android:id="@+id/action_allPosts_to_addPost"
+            app:destination="@id/addPost" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPost"
+        android:name="com.example.shareeat.AddPost"
+        android:label="fragment_add_post"
+        tools:layout="@layout/fragment_add_post" />
+</navigation>
