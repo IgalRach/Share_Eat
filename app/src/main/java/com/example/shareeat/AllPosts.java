@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.NavigableMap;
@@ -32,7 +33,6 @@ public class AllPosts extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_allPosts_to_addPost );
             }
         });
-
         return view;
     }
 }
