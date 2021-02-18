@@ -13,12 +13,6 @@
         <action
             android:id="@+id/action_allPosts_to_addPost"
             app:destination="@id/addPost" />
-        <action
-            android:id="@+id/action_allPosts_to_fragment_search"
-            app:destination="@id/fragment_search" />
-        <action
-            android:id="@+id/action_allPosts_to_favorites"
-            app:destination="@id/favorites" />
     </fragment>
     <fragment
         android:id="@+id/addPost"
@@ -35,4 +29,18 @@
         android:name="com.example.shareeat.favorites"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.example.shareeat.profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_editProfile"
+            app:destination="@id/editProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfile"
+        android:name="com.example.shareeat.EditProfile"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

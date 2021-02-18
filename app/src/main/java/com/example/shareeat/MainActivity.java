@@ -39,13 +39,8 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
 //        ListView list = findViewById(R.id.main_list_v);
 //        MyAdapter adapter = new MyAdapter();
 //        list.setAdapter(adapter);
-
-//        Spinner addPost_spinner= findViewById(R.id.addPost_Category);
-//        ArrayAdapter<CharSequence> adapter= ArrayAdapter.createFromResource(this,R.array.Categories, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        addPost_spinner.setAdapter(adapter);
-//        addPost_spinner.setOnItemSelectedListener(this);
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -59,9 +54,12 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
                         case R.id.navigation_search:
                             selectedFragment = new Fragment_search();
                             break;
-//                        case R.id.navigation_favorites:
-//                            selectedFragment= new AllPosts();
-//                            break;
+                        case R.id.navigation_favorites:
+                            selectedFragment= new favorites();
+                            break;
+                        case R.id.navigation_profile:
+                            selectedFragment= new profile();
+                            break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment,selectedFragment).commit();
                     return true;
@@ -81,13 +79,6 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
 //    }
 
 //    class MyAdapter extends  BaseAdapter{
-//        List<String> data = new LinkedList<String>();
-//
-//        public MyAdapter() {
-//            for (int i = 0; i < 10; i++) {
-//                data.add("element #"+i);
-//            }
-//        }
 //        @Override
 //        public int getCount() {
 //            return data.size();
@@ -105,15 +96,18 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
 //
 //        @Override
 //        public View getView(int i, View view, ViewGroup viewGroup) {
-//            View v = getLayoutInflater().inflate(R.layout.list_row,null);
+//                if(view== null){
+//                    view = getLayoutInflater().inflate(R.layout.list_row,null);
+//                }
+//
 //            String str = data.get(i);
-//            TextView txt = v.findViewById(R.id.listRow_nickname);
+//            TextView txt = view.findViewById(R.id.listRow_nickname);
 //            txt.setText(str);
-//            TextView recipe = v.findViewById(R.id.listRow_recipe);
+//            TextView recipe = view.findViewById(R.id.listRow_recipe);
 //            txt.setText((CharSequence) recipe);
-//            TextView title = v.findViewById(R.id.listRow_titleRec);
+//            TextView title = view.findViewById(R.id.listRow_titleRec);
 //            txt.setText((CharSequence) title);
-//            return v;
+//            return view;
 //        }
 //    }
 

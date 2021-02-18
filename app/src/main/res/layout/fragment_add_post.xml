@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/addPost_Title"
         tools:ignore="MissingConstraints" />
 
-    <TextView
+    <EditText
         android:id="@+id/addPost_ingredients"
         android:layout_width="0dp"
         android:layout_height="100dp"
@@ -47,14 +47,14 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/textview_border"
+        android:hint=" Ingredients"
         android:inputType="textLongMessage|textMultiLine"
-        android:text=" Ingredients"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addPost_Category" />
 
-    <TextView
+    <EditText
         android:id="@+id/addPost_Recipe"
         android:layout_width="0dp"
         android:layout_height="200dp"
@@ -62,8 +62,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/textview_border"
+        android:hint=" How To Make"
         android:inputType="textLongMessage|textMultiLine"
-        android:text=" How To Make"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
