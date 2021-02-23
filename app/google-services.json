@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "30741104126",
+    "project_id": "shareeat1",
+    "storage_bucket": "shareeat1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30741104126:android:3d227addaad1412744acaf",
+        "android_client_info": {
+          "package_name": "com.example.shareeat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30741104126-v4c1l5vrun12b51jk69cllk63u04ip7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtExxhfVxiGQmPCkEbSEhnM5pNRUQrG3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30741104126-v4c1l5vrun12b51jk69cllk63u04ip7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
