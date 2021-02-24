@@ -3,28 +3,25 @@ package com.example.shareeat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.icu.text.UFormat;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.shareeat.model.Model;
+import com.example.shareeat.model.Recipe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.nio.file.Files;
-import java.util.LinkedList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity/* implements AdapterView.OnItemSelectedListener*/ {
+
 
 
     @Override
@@ -32,14 +29,15 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Navigation bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        //Navigation bar End
 
-
-//        ListView list = findViewById(R.id.main_list_v);
-//        MyAdapter adapter = new MyAdapter();
-//        list.setAdapter(adapter);
     }
+
+
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,48 +65,5 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
             };
 
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        String addPost_text= parent.getItemAtPosition(position).toString();
-//        Toast.makeText(parent.getContext(),addPost_text,Toast.LENGTH_SHORT).show();
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
-
-//    class MyAdapter extends  BaseAdapter{
-//        @Override
-//        public int getCount() {
-//            return data.size();
-//        }
-//
-//        @Override
-//        public Object getItem(int i) {
-//            return null;
-//        }
-//
-//        @Override
-//        public long getItemId(int i) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public View getView(int i, View view, ViewGroup viewGroup) {
-//                if(view== null){
-//                    view = getLayoutInflater().inflate(R.layout.list_row,null);
-//                }
-//
-//            String str = data.get(i);
-//            TextView txt = view.findViewById(R.id.listRow_nickname);
-//            txt.setText(str);
-//            TextView recipe = view.findViewById(R.id.listRow_recipe);
-//            txt.setText((CharSequence) recipe);
-//            TextView title = view.findViewById(R.id.listRow_titleRec);
-//            txt.setText((CharSequence) title);
-//            return view;
-//        }
-//    }
 
 }

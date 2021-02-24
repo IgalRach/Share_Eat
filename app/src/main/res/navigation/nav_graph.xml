@@ -43,4 +43,5 @@
         android:name="com.example.shareeat.EditProfile"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <action android:id="@+id/action_global_favorites" app:destination="@id/favorites" />
 </navigation>

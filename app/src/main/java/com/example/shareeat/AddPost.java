@@ -32,7 +32,7 @@ public class AddPost extends Fragment {
             }
         });
 
-        String [] categories ={"Italian","Spicy","French","Meat","Dairy","Fish","Kosher","Dessert",};
+        String [] categories ={"","Italian","Spicy","French","Meat","Dairy","Fish","Kosher","Dessert",};
         Spinner spinner = (Spinner) view.findViewById(R.id.addPost_Category);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

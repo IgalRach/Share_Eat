@@ -8,6 +8,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.shareeat.adapters.RecipesAdapter;
+import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
 
+import java.util.List;
 import java.util.NavigableMap;
 
 
@@ -43,58 +47,28 @@ public class AllPosts extends Fragment {
             }
         });
 
+        RecyclerView rv = view.findViewById(R.id.main_recycler_v);
+        rv.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(layoutManager);
 
 
-//        RecyclerView recyclerView= (RecyclerView) view.findViewById(R.id.main_list_v);
-//        ListAdapter listAdapter = new ListAdapter() ;
-//        recyclerView.setAdapter(listAdapter);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        recyclerView.setLayoutManager(layoutManager);
+        List<Recipe> data= Model.instance.getAllRecipes();
+
+        RecipesAdapter adapter= new RecipesAdapter(getLayoutInflater());
+        adapter.data=data;
+        rv.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new RecipesAdapter.OnItemClickListener(){
+            @Override
+            public void OnItemClick(int position) {
+                Log.d("Tag","row was clicked "+ position);
+            }
+        });
+
         return view;
     }
 
-//    class MyAdapter extends RecyclerView.Adapter{
-//        @NonNull
-//        @Override
-//        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//            return null;
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return 0;
-//        }
-//        private class ListViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
-//            private ImageView profile_img;
-//            private TextView nickName;
-//            private EditText titleRecipe;
-//            private EditText recipe;
-//            private ImageView img;
-//
-//            public ListViewHolder(@NonNull View itemView) {
-//                super(itemView);
-//                titleRecipe=(EditText)itemView.findViewById(R.id.listRow_titleRec);
-//                recipe = (EditText)itemView.findViewById(R.id.listRow_recipe);
-//                img =(ImageView)itemView.findViewById(R.id.listRow_img);
-//                itemView.setOnClickListener(this);
-//            }
-//
-//            public void bindView(int position){
-//                Recipe r=
-//                titleRecipe.setText();
-//            }
-//
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        }
-//    }
 }
 

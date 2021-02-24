@@ -5,12 +5,19 @@ import java.util.List;
 
 public class Model {
     public final static Model instance = new Model();
-    private Model(){
+    List<Recipe> data = new LinkedList<Recipe>();
 
+    private Model(){
+        for(int i=0; i<100; i++) {
+            Recipe recipe = new Recipe();
+            recipe.setTitleRecipe("1234"+i);
+            recipe.setRecipe("five lemons , 20 apples"+i);
+            data.add(recipe);
+        }
     }
 
     public List<Recipe> getAllRecipes(){
-        return null;
+        return data;
     }
 
     public void addRecipe(Recipe recipe){
