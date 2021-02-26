@@ -26,10 +26,10 @@ public class MainActivity<OnOption> extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this,navController);
 
 
-        
+
         //Navigation bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        NavigationUI.setupWithNavController(bottomNav,navController);
         //Navigation bar End
 
 
@@ -43,32 +43,6 @@ public class MainActivity<OnOption> extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
-
-                    switch (item.getItemId()) {
-                        case R.id.navigation_home:
-                            selectedFragment = new AllPosts();
-                            break;
-                        case R.id.navigation_search:
-                            selectedFragment = new Fragment_search();
-                            break;
-                        case R.id.navigation_favorites:
-                            selectedFragment= new favorites();
-                            break;
-                        case R.id.navigation_profile:
-                            selectedFragment= new profile();
-                            break;
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainactivity_navhost,selectedFragment).commit();
-                    return true;
-                }
-    };
 
 
 
