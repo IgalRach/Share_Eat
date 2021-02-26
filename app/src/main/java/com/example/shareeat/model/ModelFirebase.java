@@ -17,7 +17,8 @@ import static android.content.ContentValues.TAG;
 public class ModelFirebase {
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public FirebaseAuth mAuth=FirebaseAuth.getInstance();
+    public FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     public void signUpToFirebase(User user, String password, Activity activity){
         mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
@@ -45,35 +46,29 @@ public class ModelFirebase {
                 });
     }
 
-    public void signInToFirebase(String email, String password, Activity activity, Model.SuccessListener listener){
+    public void signInToFirebase(String email, String password, Activity activity) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Log.d(TAG, "signInWithEmailSuccess");
-                            Toast.makeText(activity, "Sign In Success!", Toast.LENGTH_SHORT).show();
-                            listener.onComplete(true);
+                        if (task.isSuccessful()) {
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(activity, "LOGIN Success!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // NEED TO FIX THE NAVIGATE WHEN YOU'RE NOT LOGIN SUCCESS
+                                        Toast.makeText(activity, "LOGIN FAILED! ", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         } else {
-                            Log.d(TAG, "signInWithEmailFail");
-                            Toast.makeText(activity, "Error Sign In! ", Toast.LENGTH_SHORT).show();
-                            listener.onComplete(false);
+                            Toast.makeText(activity, "LOGIN FAILED! ", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
-//   public void signInWithEmailAndPassword {
-//        @Override
-//        public void onComplete(@NonNull Task<AuthResult> task) {
-//            if (task.isSuccessful()){
-//                Toast.makeText(Login.this, "Logged in Successfully.", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            }  else {
-//                Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                progressBar.setVisibility(View.GONE);
-//            }
-//        }
-//    });
-
 }

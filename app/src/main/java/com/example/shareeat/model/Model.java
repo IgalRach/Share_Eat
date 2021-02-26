@@ -20,10 +20,10 @@ public class Model {
     ModelFirebase fireBase = new ModelFirebase();
 
     public void signUpFB(User user, String password){
-        fireBase.signUpToFirebase(user,password,mActivity);
+        fireBase.signUpToFirebase(user, password, mActivity);
     }
 
-    public void signInFB(String email, String password, SuccessListener listener){
-        fireBase.signInToFirebase(email,password,mActivity, listener);
+    public void signInFB(String email, String password){
+        fireBase.signInToFirebase(email ,password, mActivity);
     }
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shareeat.model.Model;
+import com.example.shareeat.model.User;
 
 public class LoginFragment extends Fragment {
 
@@ -38,49 +40,38 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String userEmail = email.getText().toString().trim();
                 String userPassword = password.getText().toString().trim();
 
-                if (TextUtils.isEmpty(userEmail)){
-                    email.setError("Email is required.");
-                    return;
-                }
-
-                if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-                    email.setError("Please enter a valid email!");
-                }
-
-                if (TextUtils.isEmpty(userPassword)){
-                    password.setError("Password is required.");
-                    return;
-                }
-
-                if (userPassword.length()< 8){
-                    password.setError("Password must be >= 8 Characters");
-                    return;
-                }
+//                if (TextUtils.isEmpty(userEmail)){
+//                    email.setError("Email is required.");
+//                    return;
+//                }
+//
+//                if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+//                    email.setError("Please enter a valid email!");
+//                }
+//
+//                if (TextUtils.isEmpty(userPassword)){
+//                    password.setError("Password is required.");
+//                    return;
+//                }
+//
+//                if (userPassword.length()< 8){
+//                    password.setError("Password must be >= 8 Characters");
+//                    return;
+//                }
 
                 progressBar.setVisibility(View.VISIBLE);
+                Model.instance.signInFB(userEmail, userPassword);
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_allPosts);
 
-
-                if (email.equals("") && password.equals("")){
-                    Toast.makeText(getActivity(), "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Model.instance.signInFB(userEmail, userPassword, new Model.SuccessListener() {
-                        @Override
-                        public void onComplete(boolean result) {
-                            if (result) {
-                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_allPosts);
-                            } else {
-                                Toast.makeText(getActivity(), "Failed To Log In", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+                /*
+                Need To FIX
+                 */
             }
         });
-
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,3 +83,19 @@ public class LoginFragment extends Fragment {
         return view;
     }
 }
+
+//                if (email.equals("") && password.equals("")){
+//                    Toast.makeText(getActivity(), "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    Model.instance.signInFB(userEmail, userPassword, new Model.SuccessListener() {
+//                        @Override
+//                        public void onComplete(boolean result) {
+//                            if (result) {
+//                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_allPosts);
+//                            } else {
+//                                Toast.makeText(getActivity(), "Failed To Log In", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+
+//                }
