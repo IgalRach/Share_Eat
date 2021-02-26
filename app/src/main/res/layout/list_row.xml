@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/listRow_profile_im"
+        android:id="@+id/profile_profile_im"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -26,7 +26,7 @@
         android:layout_marginStart="32dp"
         android:text="Nickname"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/listRow_profile_im"
+        app:layout_constraintStart_toEndOf="@+id/profile_profile_im"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="31dp" />
 
