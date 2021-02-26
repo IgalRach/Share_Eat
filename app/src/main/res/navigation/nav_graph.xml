@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/allPosts">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/allPosts"
@@ -29,12 +29,38 @@
         android:name="com.example.shareeat.favorites"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+ 
+  <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.shareeat.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_allPosts"
+            app:destination="@id/allPosts" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.shareeat.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_allPosts"
+            app:destination="@id/allPosts" />
+    </fragment>
     <fragment
         android:id="@+id/profile"
         android:name="com.example.shareeat.profile"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
-        <action
+        
+      <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/editProfile" />
     </fragment>
@@ -43,5 +69,7 @@
         android:name="com.example.shareeat.EditProfile"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" />
+
     <action android:id="@+id/action_global_favorites" app:destination="@id/favorites" />
+
 </navigation>
