@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/allPosts"
         android:name="com.example.shareeat.AllPosts"
-        android:label="fragment_all_posts"
-        tools:layout="@layout/fragment_all_posts" >
+        android:label="Easy Cook"
+        tools:layout="@layout/fragment_all_posts">
         <action
             android:id="@+id/action_allPosts_to_addPost"
             app:destination="@id/addPost" />
@@ -17,23 +17,23 @@
     <fragment
         android:id="@+id/addPost"
         android:name="com.example.shareeat.AddPost"
-        android:label="fragment_add_post"
+        android:label="Add Post"
         tools:layout="@layout/fragment_add_post" />
     <fragment
         android:id="@+id/fragment_search"
         android:name="com.example.shareeat.Fragment_search"
-        android:label="fragment_search"
+        android:label="Search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/favorites"
         android:name="com.example.shareeat.favorites"
-        android:label="fragment_favorites"
+        android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/profile"
         android:name="com.example.shareeat.profile"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/editProfile" />
@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/editProfile"
         android:name="com.example.shareeat.EditProfile"
-        android:label="fragment_edit_profile"
+        android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" />
     <action android:id="@+id/action_global_favorites" app:destination="@id/favorites" />
 </navigation>

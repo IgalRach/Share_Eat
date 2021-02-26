@@ -3,25 +3,17 @@ package com.example.shareeat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.example.shareeat.model.Model;
-import com.example.shareeat.model.Recipe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class MainActivity extends AppCompatActivity/* implements AdapterView.OnItemSelectedListener*/ {
-
+public class MainActivity<OnOption> extends AppCompatActivity {
+    NavController navController;
 
 
     @Override
@@ -29,14 +21,28 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Navigation menu
+        navController = Navigation.findNavController(this, R.id.mainactivity_navhost);
+        NavigationUI.setupActionBarWithNavController(this,navController);
+
+
+        
         //Navigation bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         //Navigation bar End
 
+
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        if(item.getItemId()==android.R.id.home){
+            navController.navigateUp();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -59,10 +65,10 @@ public class MainActivity extends AppCompatActivity/* implements AdapterView.OnI
                             selectedFragment= new profile();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment,selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainactivity_navhost,selectedFragment).commit();
                     return true;
                 }
-            };
+    };
 
 
 
