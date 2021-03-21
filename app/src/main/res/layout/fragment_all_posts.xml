@@ -17,7 +17,6 @@
         android:text="Add Post"
         android:textColorLink="#FFFFFF"
         android:textSize="24sp"
-        app:backgroundTint="#0AB1C6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

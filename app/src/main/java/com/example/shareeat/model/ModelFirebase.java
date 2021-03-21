@@ -1,5 +1,10 @@
 package com.example.shareeat.model;
 
+
+import android.app.Activity;
+import android.util.Log;
+import android.view.View;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +21,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ModelFirebase {
 
+
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    
+    public interface Listener<T>{
+        void onComplete();
+        void onFail();
+    }
 
     public static void registerUserAccount(final String fullName, String password, final String email, final Listener<Boolean> listener) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -47,10 +59,7 @@ public class ModelFirebase {
         }
     }
 
-    public interface Listener<T>{
-        void onComplete();
-        void onFail();
-    }
+
 
     public static void loginUser(final String email, String password, final Listener<Boolean> listener){
 
@@ -78,6 +87,7 @@ public class ModelFirebase {
         else {
             Toast.makeText(MyApplication.context, "Please fill both data fields", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public static void setUserAppData(String email) {
