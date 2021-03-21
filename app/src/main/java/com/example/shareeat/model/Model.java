@@ -6,8 +6,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Model {
-     public final static Model instance = new Model();
+     public static final Model instance = new Model();
     List<Recipe> data = new LinkedList<Recipe>();
+
+    public interface Listener<T>{
+        void onComplete(T t);
+    }
+
+    public interface CompListener{
+        void onComplete();
+    }
+
+    public void setUserAppData(String email){
+        ModelFirebase.setUserAppData(email);
+    }
 
     private Model(){
         for(int i=0; i<100; i++) {
@@ -25,16 +37,6 @@ public class Model {
     public void addRecipe(Recipe recipe){
 
     }
-    public interface SuccessListener{
-        void onComplete(boolean result);
-    }
-
-    public interface Listener<T>{
-        void onComplete(T t);
-    }
-
-
-
 
 
 }

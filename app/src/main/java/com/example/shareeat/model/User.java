@@ -1,40 +1,31 @@
 package com.example.shareeat.model;
 
+import androidx.room.Entity;
+
+@Entity
 public class User {
-    private String id;
-    private String fullName;
-    private String email;
 
-    public User(){
+    private static User MyUser = null;
 
-    }
-    public User(String fullName, String email){
-        this.fullName = fullName;
-        this.email = email;
-    }
+//    @PrimaryKey
+//    @NonNull
+    public String id;
+    public String fullName;
+    public String email;
+    public String password;
 
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    private User(){
+        id = null;
+        fullName = null;
+        email = null;
+        password = null;
     }
 
-    public String getFullName() {
-        return this.fullName;
-    }
+    public static User getInstance() {
+        if (MyUser == null)
+            MyUser = new User();
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        return MyUser;
     }
 
 }
