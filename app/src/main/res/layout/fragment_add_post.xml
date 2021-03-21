@@ -78,7 +78,6 @@
         android:layout_marginEnd="32dp"
         android:text="Upload A Photo"
         android:textSize="18sp"
-        app:backgroundTint="#0AB1C6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addPost_Recipe" />
@@ -92,7 +91,6 @@
         android:layout_marginEnd="32dp"
         android:text="Add"
         android:textSize="18sp"
-        app:backgroundTint="#0AB1C6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addPost_uploadPic_btn" />

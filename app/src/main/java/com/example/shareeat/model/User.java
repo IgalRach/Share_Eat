@@ -2,14 +2,14 @@ package com.example.shareeat.model;
 
 public class User {
     private String id;
-    private String fullName;
+    private String nickName;
     private String email;
 
     public User(){
 
     }
-    public User(String fullName, String email){
-        this.fullName = fullName;
+    public User(String nickName, String email){
+        this.nickName = nickName;
         this.email = email;
     }
 
@@ -22,11 +22,11 @@ public class User {
     }
 
     public String getFullName() {
-        return this.fullName;
+        return this.nickName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFullName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getEmail() {

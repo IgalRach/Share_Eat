@@ -2,14 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registerfragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFEB3B"
-    tools:context=".RegisterFragment">
+    android:background="@drawable/background"
+    tools:context=".register">
+
+    <TextView
+        android:id="@+id/register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="Easy Cook"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/register_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/registerfragment_login_btn"
+        android:id="@+id/register_login_btn"
         android:layout_width="240dp"
         android:layout_height="57dp"
         android:text="Alreay signued up? Click Login"
@@ -21,52 +32,52 @@
         app:layout_constraintVertical_bias="0.807" />
 
     <EditText
-        android:id="@+id/registerfrag_fullName"
+        android:id="@+id/register_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Full Name"
+        android:hint="Nickname"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/registerfrag_password"
+        app:layout_constraintBottom_toTopOf="@+id/register_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.946" />
 
     <EditText
-        android:id="@+id/registerfrag_email"
+        android:id="@+id/register_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="152dp"
+        android:layout_marginBottom="100dp"
         android:ems="10"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/registerfragment_login_btn"
+        android:hint="password (length: 8-20 )"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/register_login_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/registerfrag_password"
+        android:id="@+id/register_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/registerfrag_email"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/register_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/registerfragment_register_btn"
+        android:id="@+id/register_register_btn"
         android:layout_width="239dp"
         android:layout_height="46dp"
         android:text="Register"
-        app:layout_constraintBottom_toTopOf="@+id/registerfragment_login_btn"
+        app:layout_constraintBottom_toTopOf="@+id/register_login_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerfrag_email"
+        app:layout_constraintTop_toBottomOf="@+id/register_password"
         app:layout_constraintVertical_bias="1.0" />
 
     <ProgressBar
@@ -78,6 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerfragment_login_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/register_login_btn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

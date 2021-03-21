@@ -2,6 +2,7 @@ package com.example.shareeat.model;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,12 @@ import static android.content.ContentValues.TAG;
 public class ModelFirebase {
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
-    public void signUpToFirebase(User user, String password, Activity activity){
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
+
+    public static void signUpToFirebase(User user, String password, Activity activity){
+         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+         mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -40,13 +42,14 @@ public class ModelFirebase {
                             });
                         }
                         else {
-                            Toast.makeText(activity, "Error User Created! ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, "User creation failed!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    public void signInToFirebase(String email, String password, Activity activity) {
+    public static void signInToFirebase(String email, String password, Activity activity) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

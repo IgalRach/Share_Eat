@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -12,35 +11,46 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.shareeat.model.ModelFirebase;
+import com.example.shareeat.model.User;
 
 
-public class login extends AppCompatActivity {
+public class register extends AppCompatActivity {
 
-    EditText email, password;
+    EditText nickname, email, password;
     Button btnLogin, btnRegister;
     ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
-        email = findViewById(R.id.loginfrag_email);
-        password = findViewById(R.id.loginfrag_password);
+        nickname = findViewById(R.id.register_nickname);
+        password = findViewById(R.id.register_password);
+        email = findViewById(R.id.register_email);
 
-        btnRegister = findViewById(R.id.login_register_btn);
-        btnLogin = findViewById(R.id.login_btn);
-        progressBar = findViewById(R.id.loginfrag_progressBar);
+        btnLogin = findViewById(R.id.register_login_btn);
+        btnRegister = findViewById(R.id.register_register_btn);
 
+        progressBar = findViewById(R.id.registerfrag_progressBar);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View v) {
+                String userNickname = nickname.getText().toString().trim();
                 String userEmail = email.getText().toString().trim();
                 String userPassword = password.getText().toString().trim();
 
-                if (TextUtils.isEmpty(userEmail)){
-                    email.setError("Email is required.");
+
+                if(userNickname.isEmpty()){
+                    nickname.setError("Nickname is required!");
+                    nickname.requestFocus();
+                    return;
+                }
+
+                if(userEmail.isEmpty()){
+                    email.setError("Email is required!");
                     email.requestFocus();
                     return;
                 }
@@ -61,18 +71,17 @@ public class login extends AppCompatActivity {
                     password.requestFocus();
                     return;
                 }
+
                 progressBar.setVisibility(View.VISIBLE);
-                ModelFirebase.signInToFirebase(userEmail,userPassword,login.this);
+                final User user = new User(userNickname, userEmail);
+                ModelFirebase.signUpToFirebase(user,userPassword,register.this);
+                startActivity(new Intent(register.this,MainActivity.class));
 
-                startActivity(new Intent(login.this,MainActivity.class));
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(login.this,register.class));
-            }
-        });
     }
+
+
+
 }
