@@ -5,54 +5,71 @@
     android:id="@+id/loginActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EA9090"
+    android:background="@drawable/background"
     tools:context=".login">
 
-    <Button
-        android:id="@+id/movetoRegister"
-        android:layout_width="239dp"
-        android:layout_height="46dp"
+
+    <TextView
+        android:id="@+id/register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Easy Cook"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/loginfrag_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/login_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/movetoRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+  
+
+
+    <EditText
+        android:id="@+id/login_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/movetoRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_email"
+        app:layout_constraintVertical_bias="0.092" />
+  
 
     <Button
         android:id="@+id/login_login_btn"
         android:layout_width="239dp"
         android:layout_height="46dp"
         android:text="LOGIN"
-        app:layout_constraintBottom_toTopOf="@+id/movetoRegister"
+        app:layout_constraintBottom_toTopOf="@+id//movetoRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_password"
-        app:layout_constraintVertical_bias="0.982" />
-
-    <EditText
-        android:id="@+id/login_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="272dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textPersonName"
+        app:layout_constraintVertical_bias="1.0" />
+  
+      <Button
+        android:id="@+id/movetoRegister"
+        android:layout_width="239dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="120dp"
+        android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/login_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_email" />
-
+        app:layout_constraintStart_toStartOf="parent" />
+  
     <ProgressBar
         android:id="@+id/login_progressBar"
         style="?android:attr/progressBarStyle"
@@ -63,4 +80,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movetoRegister" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

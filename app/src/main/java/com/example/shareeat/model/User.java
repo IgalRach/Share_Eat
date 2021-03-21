@@ -2,13 +2,13 @@ package com.example.shareeat.model;
 
 import androidx.room.Entity;
 
+
 @Entity
 public class User {
 
     private static User MyUser = null;
 
-//    @PrimaryKey
-//    @NonNull
+
     public String id;
     public String fullName;
     public String email;
@@ -19,6 +19,7 @@ public class User {
         fullName = null;
         email = null;
         password = null;
+
     }
 
     public static User getInstance() {
