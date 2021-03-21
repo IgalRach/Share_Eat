@@ -9,70 +9,72 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.example.shareeat.model.ModelFirebase;
-
+import com.google.firebase.auth.FirebaseAuth;
 
 public class login extends AppCompatActivity {
 
-    EditText email, password;
-    Button btnLogin, btnRegister;
+    EditText emailInput;
+    EditText passwordInput;
+    Button loginBtn;
+    Button moveToRegisterBtn;
+    FirebaseAuth firebaseAuth;
+
     ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        email = findViewById(R.id.loginfrag_email);
-        password = findViewById(R.id.loginfrag_password);
+        if (firebaseAuth.getCurrentUser() != null) {
+            ModelFirebase.setUserAppData(firebaseAuth.getCurrentUser().getEmail());
+            startActivity(new Intent(login.this, MainActivity.class));
+            finish();
+        }
+        setContentView(R.layout.activity_login);
 
-        btnRegister = findViewById(R.id.login_register_btn);
-        btnLogin = findViewById(R.id.login_btn);
-        progressBar = findViewById(R.id.loginfrag_progressBar);
+        this.setTitle("Login");
 
+        emailInput = findViewById(R.id.login_email);
+        passwordInput = findViewById(R.id.login_password);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        loginBtn = findViewById(R.id.login_login_btn);
+        moveToRegisterBtn = findViewById(R.id.movetoRegister);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String userEmail = email.getText().toString().trim();
-                String userPassword = password.getText().toString().trim();
-
-                if (TextUtils.isEmpty(userEmail)){
-                    email.setError("Email is required.");
-                    email.requestFocus();
-                    return;
-                }
-
-                if(!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()){
-                    email.setError("Please provide valid email!");
-                    email.requestFocus();
-                    return;
-                }
-
-                if(userPassword.isEmpty()){
-                    password.setError("Password is required!");
-                    password.requestFocus();
-                    return;
-                }
-                if(userPassword.length()<8 || userPassword.length()>20){
-                    password.setError("Password length must be 8-20 characters!");
-                    password.requestFocus();
-                    return;
-                }
+            public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                ModelFirebase.signInToFirebase(userEmail,userPassword,login.this);
-
-                startActivity(new Intent(login.this,MainActivity.class));
+                ModelFirebase.loginUser(emailInput.getText().toString(), passwordInput.getText().toString(), new ModelFirebase.Listener<Boolean>() {
+                    @Override
+                    public void onComplete() {
+                        startActivity(new Intent(login.this, MainActivity.class));
+                        finish();
+                    }
+                    @Override
+                    public void onFail() {
+                    }
+                });
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+        moveToRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(login.this,register.class));
+                    startActivity(new Intent(login.this,register.class));
             }
         });
+
+}
+
+    private void toRegisterPage() {
+        Intent intent = new Intent(this, register.class);
+        startActivity(intent);
+
     }
 }
