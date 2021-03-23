@@ -10,12 +10,48 @@ public class Recipe {
     @PrimaryKey
     @NonNull
     String id;
-    String category;
     String titleRecipe;
+    String category;
     String recipe;
+    Long createdDate;
+    Long UpdatedDate;
+    String imageUrl;
+    String userId;
+    String userName;
 
 
-    // add picture
+    public Long getUpdatedDate() {
+        return UpdatedDate;
+    }
+
+    public void setUpdatedDate(Long updatedDate) {
+        UpdatedDate = updatedDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
 
 
     public String getCategory() {
@@ -36,6 +72,14 @@ public class Recipe {
 
     public String getRecipe() {
         return recipe;
+    }
+
+    public Long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Long createdDate) {
+        this.createdDate = createdDate;
     }
 
     public void setRecipe(String recipe) {

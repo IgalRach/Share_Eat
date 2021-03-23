@@ -10,7 +10,11 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.shareeat.model.Model;
+import com.example.shareeat.model.Recipe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
 
 public class MainActivity<OnOption> extends AppCompatActivity {
     NavController navController;
@@ -31,6 +35,7 @@ public class MainActivity<OnOption> extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         NavigationUI.setupWithNavController(bottomNav,navController);
         //Navigation bar End
+
 
 
     }

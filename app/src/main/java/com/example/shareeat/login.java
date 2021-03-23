@@ -45,19 +45,23 @@ public class login extends AppCompatActivity {
         moveToRegisterBtn = findViewById(R.id.movetoRegister);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+
                 ModelFirebase.loginUser(emailInput.getText().toString(), passwordInput.getText().toString(), new ModelFirebase.Listener<Boolean>() {
                     @Override
                     public void onComplete() {
                         startActivity(new Intent(login.this, MainActivity.class));
+
                         finish();
                     }
                     @Override
                     public void onFail() {
                     }
+
                 });
+                //progressBar.setVisibility(View.VISIBLE);
             }
         });
 

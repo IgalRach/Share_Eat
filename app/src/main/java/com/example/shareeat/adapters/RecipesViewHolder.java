@@ -20,6 +20,7 @@ public class RecipesViewHolder extends RecyclerView.ViewHolder{
     TextView nickname;
     TextView recipeTitle;
     TextView recipe;
+    TextView category;
     ImageView postImg;
     int position;
 
@@ -29,6 +30,7 @@ public class RecipesViewHolder extends RecyclerView.ViewHolder{
         nickname = itemView.findViewById(R.id.listRow_nickname);
         recipeTitle=itemView.findViewById(R.id.listRow_titleRec);
         recipe= itemView.findViewById(R.id.listRow_recipe);
+        category= itemView.findViewById(R.id.listRow_category);
         postImg=itemView.findViewById(R.id.listRow_img);
 
         itemView.setOnClickListener(new View.OnClickListener(){
@@ -41,7 +43,12 @@ public class RecipesViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void bindData(Recipe recipe, int position) {
+        nickname.setText(recipe.getUserName());
         recipeTitle.setText(recipe.getTitleRecipe());
+        this.recipe.setText(recipe.getRecipe());
+        category.setText(recipe.getCategory());
+
+
         this.position= position;
     }
 }

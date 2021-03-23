@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import com.example.shareeat.MyApplication;
 
 
-@Database(entities = {Recipe.class}, version = 1)
+@Database(entities = {Recipe.class}, version = 3)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract RecipeDao recipeDao();
 }
