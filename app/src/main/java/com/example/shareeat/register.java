@@ -1,5 +1,6 @@
 package com.example.shareeat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.shareeat.model.ModelFirebase;
+import com.example.shareeat.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class register extends AppCompatActivity {
 
@@ -37,8 +44,20 @@ public class register extends AppCompatActivity {
                         emailInput.getText().toString(), new ModelFirebase.Listener<Boolean>() {
                             @Override
                             public void onComplete() {
-                                startActivity(new Intent(register.this, MainActivity.class));
-                                finish();
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(fullNameInput.getText().toString())
+                                        .build();
+                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            startActivity(new Intent(register.this, MainActivity.class));
+                                            finish();
+                                        }
+                                    }
+                                });
+
                             }
 
                             @Override

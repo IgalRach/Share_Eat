@@ -9,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.shareeat.model.ModelFirebase;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +22,7 @@ public class login extends AppCompatActivity {
     Button moveToRegisterBtn;
     FirebaseAuth firebaseAuth;
 
-    ProgressBar progressBar;
+    //ProgressBar progressBar;
 
 
     @Override
@@ -48,7 +49,7 @@ public class login extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+                //progressBar.setVisibility(View.VISIBLE);
                 ModelFirebase.loginUser(emailInput.getText().toString(), passwordInput.getText().toString(), new ModelFirebase.Listener<Boolean>() {
                     @Override
                     public void onComplete() {

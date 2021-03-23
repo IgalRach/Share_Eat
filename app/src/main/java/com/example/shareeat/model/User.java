@@ -1,5 +1,7 @@
 package com.example.shareeat.model;
 
+import android.widget.EditText;
+
 import androidx.room.Entity;
 
 
@@ -14,12 +16,18 @@ public class User {
     public String email;
     public String password;
 
-    private User(){
+    public User(){
         id = null;
         fullName = null;
         email = null;
         password = null;
 
+    }
+
+    public User(String fullNameInput, String passwordInput, String emailInput) {
+        this.fullName = fullNameInput;
+        this.password = passwordInput;
+        this.email = emailInput;
     }
 
     public static User getInstance() {
