@@ -5,10 +5,11 @@ import android.content.Context;
 
 public class MyApplication extends Application {
 
-    public static Context context;
+    static public Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        context=getApplicationContext();
+        context = getApplicationContext();
     }
 }

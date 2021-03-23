@@ -52,8 +52,6 @@ public class Recipe {
         this.userName = userName;
     }
 
-
-
     public String getCategory() {
         return category;
     }

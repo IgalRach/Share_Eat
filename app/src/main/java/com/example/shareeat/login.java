@@ -20,7 +20,7 @@ public class login extends AppCompatActivity {
     Button moveToRegisterBtn;
     FirebaseAuth firebaseAuth;
 
-    ProgressBar progressBar;
+    //ProgressBar progressBar;
 
 
     @Override
