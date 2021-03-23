@@ -57,7 +57,6 @@ public class register extends AppCompatActivity {
                                         }
                                     }
                                 });
-
                             }
 
                             @Override
@@ -77,3 +76,4 @@ public class register extends AppCompatActivity {
         });
     }
 }
+

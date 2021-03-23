@@ -1,13 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-
-    "identityHash": "87e460374fe3b4b7e8dba295dbb3408d",
+    "version": 3,
+    "identityHash": "9310434df64e1e69bf7baa6bdaa8b9a9",
     "entities": [
       {
         "tableName": "Recipe",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `category` TEXT, `titleRecipe` TEXT, `recipe` TEXT, `createdDate` TEXT, `imageUrl` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `titleRecipe` TEXT, `category` TEXT, `recipe` TEXT, `createdDate` INTEGER, `UpdatedDate` INTEGER, `imageUrl` TEXT, `userId` TEXT, `userName` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -16,14 +15,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "category",
-            "columnName": "category",
+            "fieldPath": "titleRecipe",
+            "columnName": "titleRecipe",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "titleRecipe",
-            "columnName": "titleRecipe",
+            "fieldPath": "category",
+            "columnName": "category",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -36,12 +35,30 @@
           {
             "fieldPath": "createdDate",
             "columnName": "createdDate",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UpdatedDate",
+            "columnName": "UpdatedDate",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
             "fieldPath": "imageUrl",
             "columnName": "imageUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -59,8 +76,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87e460374fe3b4b7e8dba295dbb3408d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9310434df64e1e69bf7baa6bdaa8b9a9')"
     ]
   }
 }
