@@ -8,7 +8,6 @@ import android.os.*;
 
 public class Model {
      public static final Model instance = new Model();
-   // List<Recipe> data = new LinkedList<Recipe>();
 
     public interface Listener<T>{
         void onComplete(T t);
@@ -18,17 +17,7 @@ public class Model {
         void onComplete();
     }
 
-    public void setUserAppData(String email){
-        ModelFirebase.setUserAppData(email);
-    }
-
     private Model(){
-//        for(int i=0; i<100; i++) {
-//            Recipe recipe = new Recipe();
-//            recipe.setTitleRecipe("1234"+i);
-//            recipe.setRecipe("five lemons , 20 apples"+i);
-//            data.add(recipe);
-//        }
     }
 
     public interface GetAllRecipesListener{
@@ -52,9 +41,6 @@ public class Model {
         }
         MyAsyncTask task = new MyAsyncTask();
         task.execute();
-   //  List<Recipe> data= AppLocalDb.db.recipeDao().getAllRecipes();
-
-//        return data;
     }
 
     public interface AddRecipeListener{
