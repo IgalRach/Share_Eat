@@ -124,33 +124,6 @@ public class AddPost extends Fragment {
                     Navigation.findNavController(addBtn).popBackStack();
                 }
             });
-            // Set image for the meal and add the meal
-//            saveBtn.setEnabled(false);
-//            BitmapDrawable drawable = (BitmapDrawable) avatarImageView.getDrawable();
-//            Model.instance.uploadImage(drawable.getBitmap(), meal.getId(), new Model.UploadImageListener() {
-//                @Override
-//                public void onComplete(String url) {
-//                    if (url == null) {
-//                        displayFailedError();
-//                    }
-//                    else {
-//                        meal.setImageUrl(url);
-//                        pb.setVisibility(View.VISIBLE);
-//                        Model.instance.addMeal(meal, new Model.AddMealListener() {
-//                            @Override
-//                            public void onComplete() {
-//                                pb.setVisibility(View.INVISIBLE);
-//                                saveBtn.setEnabled(true);
-//                                Navigation.findNavController(saveBtn).popBackStack();
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-
         }
-
     }
-
-
 }

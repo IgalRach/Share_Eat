@@ -17,14 +17,94 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ModelFirebase {
 
+    public void addRecipe(Recipe recipe, final Model.AddRecipeListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("recipes")
+                .document(recipe.getId()).set(recipe).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("TAG", "Recipe added Successfully");
+                listener.onComplete();
+            }
 
-    public FirebaseDatabase database = FirebaseDatabase.getInstance();
-    
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("TAG", "Error adding recipe", e);
+                listener.onComplete();
+            }
+        });
+    }
+
+    public void getAllRecipes(Model.GetAllRecipesListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("recipes")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Recipe> recipeList = new LinkedList<Recipe>();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Recipe rcp = document.toObject(Recipe.class);
+                                recipeList.add(rcp);
+                                Log.d("TAG", document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                        listener.onComplete(recipeList);
+                    }
+                });
+    }
+
+    public void getRecipe(String id, Model.GetRecipeListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("recipes").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Recipe recipe = null;
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc!=null) {
+                        recipe = task.getResult().toObject(Recipe.class);
+                    }
+                }
+                listener.onComplete(recipe);
+            }
+        });
+    }
+
+    public void updateStudent(Recipe recipe, Model.UpdateStudentListener listener) {
+        addRecipe(recipe, listener);
+    }
+
+    public void delete(Recipe recipe, Model.DeleteRecipeListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("recipes").document(recipe.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                listener.onComplete();
+            }
+        });
+    }
+
     public interface Listener<T>{
         void onComplete();
         void onFail();
