@@ -64,11 +64,6 @@ public class AllPosts extends Fragment {
         pb.setVisibility(View.INVISIBLE);
         reloadData();
 
- //--------------------------------------------------------------------------------------------
-
-
-//--------------------------------------------------------------------------------------------
-
 
         adapter= new RecipesAdapter(getLayoutInflater());
         adapter.data=recipeList;
@@ -84,41 +79,6 @@ public class AllPosts extends Fragment {
 
         return view;
     }
-
-//    class  MyAdapter extends BaseAdapter{
-//
-//        @Override
-//        public int getCount() {
-//            return recipeList.size();
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public View getView(int i, View convertView, ViewGroup viewGroup) {
-//            if(convertView==null){
-//                convertView= getLayoutInflater().inflate(R.layout.list_row,null);
-//            }
-//            TextView title= convertView.findViewById(R.id.listRow_titleRec);
-//            TextView nickname= convertView.findViewById(R.id.listRow_nickname);
-//            ImageView image= convertView.findViewById(R.id.listRow_img);
-//            TextView recipetv= convertView.findViewById(R.id.listRow_recipe);
-//
-//            Recipe recipe=recipeList.get(i);
-//            title.setText(recipe.getTitleRecipe());
-//            nickname.setText(recipe.getUserName());
-//           recipetv.setText(recipe.getRecipe());
-//            return convertView;
-//        }
-//    }
 
     public void reloadData(){
         pb.setVisibility(View.VISIBLE);
