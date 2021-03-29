@@ -69,7 +69,10 @@ public class AllPosts extends Fragment {
         adapter.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d("TAG", "row was clicked "+position);
+                String recipe = data.get(position).getId();
+                AllPostsDirections.ActionAllPostsToRecipeDetails direction = AllPostsDirections.actionAllPostsToRecipeDetails(recipe);
+                Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
+                Log.d("TAG", "row was clicked "+data.get(position).getTitleRecipe());
             }
         });
         reloadData();
@@ -80,9 +83,9 @@ public class AllPosts extends Fragment {
         pb.setVisibility(View.VISIBLE);
         Model.instance.getAllRecipes(new Model.GetAllRecipesListener() {
             @Override
-            public void onComplete(List<Recipe> data2) {
-                 data = data2;
-                for(Recipe recipe:data2){
+            public void onComplete(List<Recipe> list) {
+                 data = list;
+                for(Recipe recipe:list){
                     Log.d("Tag","recipe id: "+ recipe.getId());
                 }
                 pb.setVisibility(View.INVISIBLE);
@@ -114,6 +117,7 @@ public class AllPosts extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("Tag","position is: "+ position);
                     listener.onItemClick(position);
                 }
             });

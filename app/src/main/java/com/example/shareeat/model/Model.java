@@ -23,6 +23,7 @@ public class Model {
     }
     public void getAllRecipes(GetAllRecipesListener listener){
         modelFirebase.getAllRecipes(listener);
+        //AppLocalDb.db.recipeDao().getAllRecipes();
         //modelSql.getAllRecipes(listener);
     }
 
@@ -40,6 +41,7 @@ public class Model {
     }
     public void addRecipe(final Recipe recipe,AddRecipeListener listener) {
         modelFirebase.addRecipe(recipe, listener);
+        //AppLocalDb.db.recipeDao().insertAll(recipe);
         //modelSql.addRecipe(recipe, listener);
     }
 
