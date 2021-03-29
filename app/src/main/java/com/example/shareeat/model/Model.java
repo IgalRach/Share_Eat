@@ -10,7 +10,7 @@ import android.os.*;
 import com.example.shareeat.model.ModelFirebase;
 
 public class Model {
-    ModelFirebase modelFirebase;
+    ModelFirebase modelFirebase=new ModelFirebase();
     public static final Model instance = new Model();
 
     public interface Listener<T> {
@@ -77,5 +77,13 @@ public class Model {
         MyAsyncTask task = new MyAsyncTask();
         task.execute();
     }
+
+    public interface UploadImageListener extends Listener<String> {}
+
+    public void uploadImage(Bitmap imageBmp, String name, final UploadImageListener listener){
+        modelFirebase.uploadImage(imageBmp,name,listener);
+    }
+
 }
+
 
