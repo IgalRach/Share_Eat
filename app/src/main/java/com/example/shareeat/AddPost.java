@@ -154,6 +154,7 @@ public class AddPost extends Fragment {
                     }
                 }
             });
+
 //            addBtn.setEnabled(false);
 //            Log.d("TAG","recipe "+recipe.getUserName()+" id "+recipe.getUserId());
 //            pb.setVisibility(View.VISIBLE);
