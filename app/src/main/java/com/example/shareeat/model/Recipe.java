@@ -4,29 +4,61 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firestore.v1.DocumentTransform;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.google.firebase.firestore.DocumentSnapshot.ServerTimestampBehavior.ESTIMATE;
+
 @Entity
 public class Recipe {
     //user.nickname;
     @PrimaryKey
     @NonNull
-    String id;
-    String titleRecipe;
-    String category;
-    String recipe;
-    Long createdDate;
-    Long UpdatedDate;
-    String imageUrl;
-    String userId;
-    String userName;
+    private String id;
+    private String titleRecipe;
+    private String category;
+    private String recipe;
+    private Long CreatedDate;
+    private Long UpdatedDate;
+    private String imageUrl;
+    private String userId;
+    private String userName;
 
-
-    public Long getUpdatedDate() {
-        return UpdatedDate;
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("titleRecipe", titleRecipe);
+        result.put("category", category);
+        result.put("recipe", recipe);
+        result.put("CreatedDate", FieldValue.serverTimestamp());
+        result.put("lastUpdated", FieldValue.serverTimestamp());
+        result.put("imageUrl", imageUrl);
+        result.put("userId", userId);
+        result.put("userName", userName);
+        return result;
     }
 
-    public void setUpdatedDate(Long updatedDate) {
-        UpdatedDate = updatedDate;
+    public void fromMap(Map<String, Object> map) {
+        id = (String)map.get("id");
+        titleRecipe = (String)map.get("titleRecipe");
+        category = (String)map.get("category");
+        recipe = (String)map.get("recipe");
+        imageUrl = (String)map.get("imageUrl");
+        userId = (String)map.get("userId");
+        userName = (String)map.get("userName");
+        Timestamp ts = (Timestamp) map.get("CreatedDate");
+        Timestamp ts1 = (Timestamp) map.get("lastUpdated");
+        CreatedDate = ts.getSeconds();
+        UpdatedDate = ts1.getSeconds();
     }
+
+
 
     public String getImageUrl() {
         return imageUrl;
@@ -72,14 +104,6 @@ public class Recipe {
         return recipe;
     }
 
-    public Long getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Long createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public void setRecipe(String recipe) {
         this.recipe = recipe;
     }
@@ -91,5 +115,21 @@ public class Recipe {
 
     public void setTitleRecipe(String titleRecipe) {
         this.titleRecipe = titleRecipe;
+    }
+
+    public Long getCreatedDate() {
+        return CreatedDate;
+    }
+
+    public void setCreatedDate(Long createdDate) {
+        CreatedDate = createdDate;
+    }
+
+    public Long getUpdatedDate() {
+        return UpdatedDate;
+    }
+
+    public void setUpdatedDate(Long updatedDate) {
+        UpdatedDate = updatedDate;
     }
 }
