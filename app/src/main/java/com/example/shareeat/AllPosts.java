@@ -1,9 +1,12 @@
 package com.example.shareeat;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,16 +39,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class AllPosts extends Fragment {
-    List<Recipe> data = new LinkedList<Recipe>();
+    RecipeViewModel viewModel;
     ProgressBar pb;
     Button addBtn;
     RecyclerView list;
     RecipesAdapter adapter;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_all_posts, container, false);
+        viewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         pb= view.findViewById(R.id.allpost_progressBar);
 
         // added button from all post to add post.
@@ -69,10 +79,17 @@ public class AllPosts extends Fragment {
         adapter.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String recipe = data.get(position).getId();
+                String recipe = viewModel.getData().getValue().get(position).getId();
                 AllPostsDirections.ActionAllPostsToRecipeDetails direction = AllPostsDirections.actionAllPostsToRecipeDetails(recipe);
                 Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
-                Log.d("TAG", "row was clicked "+data.get(position).getTitleRecipe());
+                Log.d("TAG", "row was clicked " + viewModel.getData().getValue().get(position).getTitleRecipe());
+            }
+        });
+
+        viewModel.getData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                adapter.notifyDataSetChanged();
             }
         });
         reloadData();
@@ -81,18 +98,16 @@ public class AllPosts extends Fragment {
 
     public void reloadData(){
         pb.setVisibility(View.VISIBLE);
-        Model.instance.getAllRecipes(new Model.GetAllRecipesListener() {
+        addBtn.setEnabled(false);
+        Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
             @Override
-            public void onComplete(List<Recipe> list) {
-                 data = list;
-                for(Recipe recipe:list){
-                    Log.d("Tag","recipe id: "+ recipe.getId());
-                }
+            public void onComplete() {
                 pb.setVisibility(View.INVISIBLE);
-                adapter.notifyDataSetChanged();
+                addBtn.setEnabled(true);
             }
         });
     }
+
     /////////////////////////////////////////////////////////Class ViewHolder
     class RecipesViewHolder extends RecyclerView.ViewHolder{
 
@@ -155,15 +170,15 @@ public class AllPosts extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
-            Recipe recipe = data.get(position);
+            Recipe recipe = viewModel.getData().getValue().get(position);
             holder.bindData(recipe, position);
         }
 
         @Override
         public int getItemCount() {
-            if (data == null){
+            if (viewModel.getData().getValue() == null){
                 return 0; }
-            return data.size();
+            return viewModel.getData().getValue().size();
         }
 
 

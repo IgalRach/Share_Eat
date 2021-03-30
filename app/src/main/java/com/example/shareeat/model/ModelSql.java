@@ -2,26 +2,15 @@ package com.example.shareeat.model;
 
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.List;
 
 public class ModelSql {
-    public void getAllRecipes(Model.GetAllRecipesListener listener) {
-        class MyAsyncTask extends AsyncTask {
-            List<Recipe> data;
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                data= AppLocalDb.db.recipeDao().getAllRecipes();
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Object o){
-                super.onPostExecute(o);
-                listener.onComplete(data);
-            }
 
-        }
-        MyAsyncTask task = new MyAsyncTask();
-        task.execute();
+    public LiveData<List<Recipe>> getAllRecipes() {
+        return AppLocalDb.db.recipeDao().getAllRecipes();
     }
 
     public void addRecipe(Recipe recipe, Model.AddRecipeListener listener) {
