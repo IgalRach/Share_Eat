@@ -104,7 +104,7 @@ public class ModelFirebase {
         });
     }
 
-    public void updateStudent(Recipe recipe, Model.UpdateStudentListener listener) {
+    public void updateRecipe(Recipe recipe, Model.UpdateStudentListener listener) {
         addRecipe(recipe, listener);
     }
 

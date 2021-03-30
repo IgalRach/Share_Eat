@@ -103,7 +103,7 @@ public class Model {
 
     public interface UpdateStudentListener extends AddRecipeListener {}
     public void updateStudent(final Recipe recipe,UpdateStudentListener listener) {
-        modelFirebase.updateStudent(recipe, listener);
+        modelFirebase.updateRecipe(recipe, listener);
         //modelSql.addRecipe(recipe, listener);
     }
 
