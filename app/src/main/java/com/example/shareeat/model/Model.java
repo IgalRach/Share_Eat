@@ -5,9 +5,12 @@ import android.app.Activity;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.*;
+import com.example.shareeat.model.ModelFirebase;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,7 +21,7 @@ public class Model {
      public static final Model instance = new Model();
      ModelFirebase modelFirebase = new ModelFirebase();
      ModelSql modelSql = new ModelSql();
-
+  
     private Model(){
     }
 
@@ -108,6 +111,15 @@ public class Model {
     public interface DeleteRecipeListener extends AddRecipeListener {}
     public void deleteRecipe(Recipe recipe, DeleteRecipeListener listener){
         modelFirebase.delete(recipe, listener);
+
     }
+
+    public interface UploadImageListener extends Listener<String> {}
+
+    public void uploadImage(Bitmap imageBmp, String name, final UploadImageListener listener){
+        modelFirebase.uploadImage(imageBmp,name,listener);
+    }
+
 }
+
 

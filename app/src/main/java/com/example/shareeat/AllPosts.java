@@ -30,6 +30,7 @@ import android.widget.TextView;
 //import com.example.shareeat.adapters.RecipesViewHolder;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -73,6 +74,8 @@ public class AllPosts extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(layoutManager);
 
+        pb.setVisibility(View.INVISIBLE);
+        
         adapter = new RecipesAdapter();
         list.setAdapter(adapter);
 
@@ -172,6 +175,16 @@ public class AllPosts extends Fragment {
         public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
             Recipe recipe = viewModel.getData().getValue().get(position);
             holder.bindData(recipe, position);
+            holder.nickname.setText(recipe.getUserName());
+            holder.category.setText(recipe.getCategory());
+            holder.recipe.setText(recipe.getRecipe());
+            holder.recipeTitle.setText(recipe.getTitleRecipe());
+
+            holder.postImg.setImageResource(R.drawable.recipe_placeholder);
+            if(recipe.getImageUrl()!=null){
+                Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(holder.postImg);
+            }
+
         }
 
         @Override
