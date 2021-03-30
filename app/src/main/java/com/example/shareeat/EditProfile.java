@@ -29,9 +29,13 @@ public class EditProfile extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         EditText newFullName = view.findViewById(R.id.editTextTextPersonName);
+        newFullName.setText(user.getDisplayName());
+
         Button save = view.findViewById(R.id.editProfile_Save_Btn);
+        Button cancel = view.findViewById(R.id.editProfile_cencel_Btn);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +51,13 @@ public class EditProfile extends Fragment {
                             Navigation.findNavController(view).popBackStack();
                     }
                 });
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).popBackStack();
             }
         });
         return view;

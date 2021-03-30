@@ -71,8 +71,7 @@ public class AddPost extends Fragment {
         cancelBtn = view.findViewById(R.id.addPost_cancel_btn);
         pb = view.findViewById(R.id.addPost_progressBar);
         pb.setVisibility(View.INVISIBLE);
-
-        avatarImageView.setEnabled(false);
+        avatarImageView.setVisibility(View.INVISIBLE);
 
         //category spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
