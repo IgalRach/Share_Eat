@@ -181,6 +181,10 @@ public class AllPosts extends Fragment {
             category.setText(recipe.getCategory());
             this.position= position;
             myRecipe = recipe;
+            postImg.setImageResource(R.drawable.recipe_placeholder);
+            if(recipe.getImageUrl()!=null){
+                Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(postImg);
+            }
         }
     }
 
@@ -210,15 +214,12 @@ public class AllPosts extends Fragment {
         public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
             Recipe recipe = data.get(position);
             holder.bindData(recipe, position);
-            holder.nickname.setText(recipe.getUserName());
-            holder.category.setText(recipe.getCategory());
-            //holder.recipeTV.setText(recipe.getRecipe());
-            holder.recipeTitle.setText(recipe.getTitleRecipe());
+//            holder.nickname.setText(recipe.getUserName());
+//            holder.category.setText(recipe.getCategory());
+//            //holder.recipeTV.setText(recipe.getRecipe());
+//            holder.recipeTitle.setText(recipe.getTitleRecipe());
 
-            holder.postImg.setImageResource(R.drawable.recipe_placeholder);
-            if(recipe.getImageUrl()!=null){
-                Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(holder.postImg);
-            }
+
 
         }
 
