@@ -27,9 +27,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-//import com.example.shareeat.adapters.RecipesAdapter;
-//import com.example.shareeat.adapters.RecipesViewHolder;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
 import com.squareup.picasso.Picasso;

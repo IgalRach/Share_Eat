@@ -54,7 +54,8 @@ public class AddPost extends Fragment {
     Button addBtn;
     Button cancelBtn;
     ProgressBar pb;
-
+    Uri addImageUri;
+    boolean isExist=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class AddPost extends Fragment {
         cancelBtn = view.findViewById(R.id.addPost_cancel_btn);
         pb = view.findViewById(R.id.addPost_progressBar);
         pb.setVisibility(View.INVISIBLE);
-        //avatarImageView.setVisibility(View.INVISIBLE);
+        avatarImageView.setVisibility(View.INVISIBLE);
 
         //category spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
@@ -92,6 +93,7 @@ public class AddPost extends Fragment {
             @Override
             public void onClick(View v) {
                 editImage();
+
             }
         });
 
@@ -120,7 +122,12 @@ public class AddPost extends Fragment {
         if (recipeNameEditText.getText().length() == 0 || recipeEditText.getText().length() == 0) {
             Snackbar.make(view, "You must fill all the fields", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-            Log.d("TAG", "Some of thef ields are empty.");
+            Log.d("TAG", "Some of the fields are empty.");
+        }
+        else if(isExist==false){
+            Snackbar.make(view, "You must Import a Photo", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            Log.d("TAG", "The Photo didnt Upload");
         }
         else{
             Recipe recipe= new Recipe();
@@ -194,9 +201,11 @@ public class AddPost extends Fragment {
                 if (options[item].equals("Take Photo")) {
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePicture, 0);
+                    isExist=true;
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto , 1);
+                    isExist=true;
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -231,11 +240,6 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
                             avatarImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                             cursor.close();
                         }
-                    }
-                    if (selectedImage.equals(""))
-                    {
-                        avatarImageView.setImageResource(R.drawable.recipe_placeholder);
-                        Log.d("Test", "Empty");
                     }
                 }
                 break;
