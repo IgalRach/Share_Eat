@@ -1,6 +1,7 @@
 package com.example.shareeat.model;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,7 +13,10 @@ import java.util.List;
 @Dao
 public interface RecipeDao {
     @Query("select * from Recipe")
-   List<Recipe> getAllRecipes();
+   LiveData<List<Recipe>> getAllRecipes();
+
+    @Query("select * from Recipe where userId = :userId")
+    LiveData<List<Recipe>> getUserRecipes(String userId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Recipe... recipe);

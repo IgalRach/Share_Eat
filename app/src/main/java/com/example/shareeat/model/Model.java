@@ -1,70 +1,132 @@
 package com.example.shareeat.model;
 
 
-import android.app.Activity;
-import java.util.LinkedList;
 import java.util.List;
+
+
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.*;
+import com.example.shareeat.model.ModelFirebase;
+
+
+import androidx.lifecycle.LiveData;
+
+import com.example.shareeat.MyApplication;
 
 public class Model {
      public static final Model instance = new Model();
-
-    public interface Listener<T>{
-        void onComplete(T t);
-    }
-
-    public interface CompListener{
-        void onComplete();
-    }
-
+     ModelFirebase modelFirebase = new ModelFirebase();
+     ModelSql modelSql = new ModelSql();
+  
     private Model(){
     }
 
+    public interface Listener<T>{
+        void onComplete(T result);
+    }
+
+    public interface GetAllRecipesListener2{
+        void onComplete(List<Recipe> myRecipes);
+    }
+
     public interface GetAllRecipesListener{
-        void onComplete(List<Recipe> data);
+        void onComplete();
     }
 
-    public void getAllRecipes(GetAllRecipesListener listener){
-        class MyAsyncTask extends AsyncTask{
-            List<Recipe> data;
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                data= AppLocalDb.db.recipeDao().getAllRecipes();
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Object o){
-                super.onPostExecute(o);
-                listener.onComplete(data);
-            }
+    LiveData<List<Recipe>> recipeList;
 
-        }
-        MyAsyncTask task = new MyAsyncTask();
-        task.execute();
+    public LiveData<List<Recipe>> getAllRecipes(){
+        recipeList = (LiveData<List<Recipe>>) AppLocalDb.db.recipeDao().getAllRecipes();
+        refreshAllRecipes(null);
+        return recipeList;
     }
+
+    public LiveData<List<Recipe>> getAllRecipesPerUser(String userId) {
+        recipeList = AppLocalDb.db.recipeDao().getUserRecipes(userId);
+        refreshAllRecipes(null);
+        return recipeList;
+    }
+
+    public void refreshAllRecipes(final GetAllRecipesListener listener){
+        //get local last update date
+        final SharedPreferences sp = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        long lastUpdated = sp.getLong("lastUpdated", 0);
+
+        //get all updated record from firebase from the last updated
+        modelFirebase.getAllRecipes(lastUpdated, new ModelFirebase.GetAllRecipesListener() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onComplete(final List<Recipe> data) {
+                new AsyncTask<String,String,String>(){
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        long lastUpdated = 0;
+                        for(Recipe recipe : data){
+                            AppLocalDb.db.recipeDao().insertAll(recipe);
+                            if (recipe.getUpdatedDate() > lastUpdated) lastUpdated = recipe.getUpdatedDate();
+                        }
+                        SharedPreferences.Editor edit = MyApplication.context.getSharedPreferences("TAG",Context.MODE_PRIVATE).edit();
+                        edit.putLong("RecipesLastUpdateDate",lastUpdated);
+                        edit.commit();
+                        return "";
+                    }
+                    @Override
+                    protected void onPostExecute(String s) {
+//                        super.onPostExecute(s);
+//                        cleanLocalDb();
+//                        if (listener!=null)  listener.onComplete();
+                    }
+                }.execute("");
+            }
+        });
+    }
+
+    public interface GetRecipeListener{
+        void onComplete(Recipe recipe);
+    }
+    public void getRecipe(String id, GetRecipeListener listener){
+        modelFirebase.getRecipe(id, listener);
+    }
+
 
     public interface AddRecipeListener{
         void onComplete();
     }
-
-    public void addRecipe(final Recipe recipe,AddRecipeListener listener) {
-        class MyAsyncTask extends AsyncTask {
+    public void addRecipe(final Recipe recipe,final AddRecipeListener listener) {
+        modelFirebase.addRecipe(recipe, listener);
+        new AsyncTask<String, String, String>() {
             @Override
-            protected Object doInBackground(Object[] objects) {
+            protected String doInBackground(String... strings) {
                 AppLocalDb.db.recipeDao().insertAll(recipe);
-                return null;
+                return "";
             }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                if (listener != null){
-                    listener.onComplete();
-                }
-            }
-        };
-        MyAsyncTask task = new MyAsyncTask();
-        task.execute();
+        }.execute();
     }
+
+
+    public interface UpdateStudentListener extends AddRecipeListener {}
+    public void updateStudent(final Recipe recipe,UpdateStudentListener listener) {
+        modelFirebase.updateRecipe(recipe, listener);
+        //modelSql.addRecipe(recipe, listener);
+    }
+
+
+    public interface DeleteRecipeListener extends AddRecipeListener {}
+    public void deleteRecipe(Recipe recipe, DeleteRecipeListener listener){
+        modelFirebase.delete(recipe, listener);
+
+    }
+
+    public interface UploadImageListener extends Listener<String> {}
+
+    public void uploadImage(Bitmap imageBmp, String name, final UploadImageListener listener){
+        modelFirebase.uploadImage(imageBmp,name,listener);
+    }
+
 }
+
 

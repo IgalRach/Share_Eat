@@ -1,11 +1,20 @@
 package com.example.shareeat;
 
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,38 +34,44 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
 import java.util.UUID;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 
 public class AddPost extends Fragment {
 
 
-    //ImageButton editImage;
     TextView pageTitle;
     EditText recipeNameEditText;
     Spinner spinner;//category
     String category;
     EditText recipeEditText;
-    Button Imageurl;
+    ImageView avatarImageView;
+    Button editImage;
     Button addBtn;
     Button cancelBtn;
     ProgressBar pb;
-
+    Uri addImageUri;
+    boolean isExist=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_add_post, container, false);
-
+        avatarImageView = view.findViewById(R.id.addPost_avatar);
         recipeNameEditText= view.findViewById(R.id.addPost_recipeName);
         recipeEditText= view.findViewById(R.id.addPost_Recipe);
         String [] categories ={"","Italian","Spicy","French","Meat","Dairy","Fish","Kosher","Dessert",};
         spinner = (Spinner) view.findViewById(R.id.addPost_Category);
-        Imageurl= view.findViewById(R.id.addPost_uploadPic_btn);
+        editImage= view.findViewById(R.id.addPost_uploadPic_btn);
         addBtn = view.findViewById(R.id.addPost_add_btn);
         cancelBtn = view.findViewById(R.id.addPost_cancel_btn);
         pb = view.findViewById(R.id.addPost_progressBar);
         pb.setVisibility(View.INVISIBLE);
+        avatarImageView.setVisibility(View.INVISIBLE);
 
         //category spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
@@ -70,6 +85,14 @@ public class AddPost extends Fragment {
             }
 
             public void onNothingSelected(AdapterView<?> arg) {
+
+            }
+        });
+
+        editImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editImage();
 
             }
         });
@@ -93,11 +116,18 @@ public class AddPost extends Fragment {
         return view;
     }
 
+
+
     private void addRecipe(View view){
         if (recipeNameEditText.getText().length() == 0 || recipeEditText.getText().length() == 0) {
             Snackbar.make(view, "You must fill all the fields", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-            Log.d("TAG", "Some of thef ields are empty.");
+            Log.d("TAG", "Some of the fields are empty.");
+        }
+        else if(isExist==false){
+            Snackbar.make(view, "You must Import a Photo", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            Log.d("TAG", "The Photo didnt Upload");
         }
         else{
             Recipe recipe= new Recipe();
@@ -106,51 +136,114 @@ public class AddPost extends Fragment {
             recipe.setRecipe(recipeEditText.getText().toString());
             recipe.setCategory(category);
 
-            // Set user ID and name for the meal
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 recipe.setUserId(user.getUid());
                 recipe.setUserName(user.getDisplayName());
             }
+
+
             addBtn.setEnabled(false);
-            Log.d("TAG","recipe "+recipe.getUserName()+" id "+recipe.getUserId());
-            pb.setVisibility(View.VISIBLE);
-            Model.instance.addRecipe(recipe, new Model.AddRecipeListener() {
+            cancelBtn.setEnabled((false));
+            editImage.setEnabled(false);
+
+            BitmapDrawable drawable = (BitmapDrawable) avatarImageView.getDrawable();
+            Bitmap bitmap=drawable.getBitmap();
+
+            Model.instance.uploadImage(drawable.getBitmap(), recipe.getId(), new Model.UploadImageListener() {
                 @Override
-                public void onComplete() {
-                    pb.setVisibility(View.INVISIBLE);
-                    addBtn.setEnabled(true);
-                   // AllPosts.reloadData();
-                    Navigation.findNavController(addBtn).popBackStack();
+                public void onComplete(String url) {
+                    if(url==null){
+                        displayFailedError();
+                    }
+                    else{
+                        recipe.setImageUrl(url);
+                        pb.setVisibility(View.VISIBLE);
+                        Model.instance.addRecipe(recipe, new Model.AddRecipeListener() {
+                            @Override
+                            public void onComplete() {
+                                pb.setVisibility(View.INVISIBLE);
+                                addBtn.setEnabled(true);
+                                cancelBtn.setEnabled((false));
+                                editImage.setEnabled(false);
+                                Navigation.findNavController(addBtn).popBackStack();
+                            }
+                        });
+                    }
                 }
             });
-            // Set image for the meal and add the meal
-//            saveBtn.setEnabled(false);
-//            BitmapDrawable drawable = (BitmapDrawable) avatarImageView.getDrawable();
-//            Model.instance.uploadImage(drawable.getBitmap(), meal.getId(), new Model.UploadImageListener() {
-//                @Override
-//                public void onComplete(String url) {
-//                    if (url == null) {
-//                        displayFailedError();
-//                    }
-//                    else {
-//                        meal.setImageUrl(url);
-//                        pb.setVisibility(View.VISIBLE);
-//                        Model.instance.addMeal(meal, new Model.AddMealListener() {
-//                            @Override
-//                            public void onComplete() {
-//                                pb.setVisibility(View.INVISIBLE);
-//                                saveBtn.setEnabled(true);
-//                                Navigation.findNavController(saveBtn).popBackStack();
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-
         }
+
 
     }
 
+    private void displayFailedError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Operation Failed");
+        builder.setMessage("Saving image failed, please try again later...");
+        builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
 
+    private void editImage() {
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose your recipe picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+                    isExist=true;
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto , 1);
+                    isExist=true;
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+
+@Override
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode != RESULT_CANCELED) {
+        switch (requestCode) {
+            case 0:
+                if (resultCode == RESULT_OK && data != null) {
+                    Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                    avatarImageView.setImageBitmap(selectedImage);
+                }
+                break;
+            case 1:
+                if (resultCode == RESULT_OK && data != null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    if (selectedImage != null) {
+                        Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        if (cursor != null) {
+                            cursor.moveToFirst();
+
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            String picturePath = cursor.getString(columnIndex);
+                            avatarImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                            cursor.close();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+}
 }

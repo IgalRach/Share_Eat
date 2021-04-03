@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_allPosts_to_addPost"
             app:destination="@id/addPost" />
+        <action
+            android:id="@+id/action_allPosts_to_recipeDetails"
+            app:destination="@id/recipeDetails" />
     </fragment>
     <fragment
         android:id="@+id/addPost"
@@ -23,7 +26,11 @@
         android:id="@+id/fragment_search"
         android:name="com.example.shareeat.Fragment_search"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_fragment_search_to_result"
+            app:destination="@id/result" />
+    </fragment>
     <fragment
         android:id="@+id/favorites"
         android:name="com.example.shareeat.favorites"
@@ -35,10 +42,13 @@
         android:name="com.example.shareeat.profile"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
-        
-      <action
+
+        <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/editProfile" />
+        <action
+            android:id="@+id/action_profile_to_recipeDetails"
+            app:destination="@id/recipeDetails" />
     </fragment>
     <fragment
         android:id="@+id/editProfile"
@@ -46,6 +56,26 @@
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" />
 
-    <action android:id="@+id/action_global_favorites" app:destination="@id/favorites" />
+    <action
+        android:id="@+id/action_global_favorites"
+        app:destination="@id/favorites" />
+    <fragment
+        android:id="@+id/recipeDetails"
+        android:name="com.example.shareeat.RecipeDetails"
+        android:label="fragment_recipe_details"
+        tools:layout="@layout/fragment_recipe_details" >
+        <argument
+            android:name="recipeId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/result"
+        android:name="com.example.shareeat.result"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

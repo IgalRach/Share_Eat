@@ -1,12 +1,17 @@
 package com.example.shareeat;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +27,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-//import com.example.shareeat.adapters.RecipesAdapter;
-//import com.example.shareeat.adapters.RecipesViewHolder;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,11 +39,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class AllPosts extends Fragment {
-    List<Recipe> data = new LinkedList<Recipe>();
-    ProgressBar pb;
-    Button addBtn;
+
     RecyclerView list;
-    RecipesAdapter adapter;
+    List<Recipe> data = new LinkedList<Recipe>();
+    AllPosts.RecipesAdapter adapter;
+    RecipeViewModel viewModel;
+    LiveData<List<Recipe>> liveData;
+
+    Button addBtn;
+    SwipeRefreshLayout sref;
+    ProgressBar pb;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,39 +72,79 @@ public class AllPosts extends Fragment {
             }
         });
 
+        // Swipe to refresh
+        sref = view.findViewById(R.id.meal_list_swipe);
+        sref.setOnRefreshListener(() -> {
+            sref.setRefreshing(true);
+            pb.setVisibility(View.VISIBLE);
+            //fab.setEnabled(false);
+            Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
+                @Override
+                public void onComplete() {
+                    sref.setRefreshing(false);
+                    pb.setVisibility(View.INVISIBLE);
+                    //fab.setEnabled(true);
+                }
+            });
+        });
+
+
         list = view.findViewById(R.id.main_recycler_v);
         list.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(layoutManager);
 
+        pb.setVisibility(View.INVISIBLE);
+        
         adapter = new RecipesAdapter();
         list.setAdapter(adapter);
 
         adapter.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d("TAG", "row was clicked "+position);
+                Recipe recipe = data.get(position);
+                AllPostsDirections.ActionAllPostsToRecipeDetails direction = AllPostsDirections.actionAllPostsToRecipeDetails(recipe.getId());
+                Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
+                Log.d("TAG", "row was clicked " + viewModel.getData().getValue().get(position).getTitleRecipe());
             }
         });
-        reloadData();
+
+        liveData = viewModel.getData();
+        liveData.observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                List<Recipe> reverseData = reverseData(recipes);
+                data = reverseData;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        reverseData(data);
+        //reloadData();
         return view;
+    }
+
+    private List<Recipe> reverseData(List<Recipe> recipes) {
+        List<Recipe> reversedData = new LinkedList<>();
+        for (Recipe recipe: recipes) {
+            reversedData.add(0, recipe);
+        }
+        return reversedData;
     }
 
     public void reloadData(){
         pb.setVisibility(View.VISIBLE);
-        Model.instance.getAllRecipes(new Model.GetAllRecipesListener() {
+        addBtn.setEnabled(false);
+        Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
             @Override
-            public void onComplete(List<Recipe> data2) {
-                 data = data2;
-                for(Recipe recipe:data2){
-                    Log.d("Tag","recipe id: "+ recipe.getId());
-                }
+            public void onComplete() {
                 pb.setVisibility(View.INVISIBLE);
-                adapter.notifyDataSetChanged();
+                addBtn.setEnabled(true);
             }
         });
     }
+
     /////////////////////////////////////////////////////////Class ViewHolder
     class RecipesViewHolder extends RecyclerView.ViewHolder{
 
@@ -97,23 +152,24 @@ public class AllPosts extends Fragment {
         CircleImageView profilePic;
         TextView nickname;
         TextView recipeTitle;
-        TextView recipe;
+        TextView recipeTV;
         TextView category;
         ImageView postImg;
         int position;
+        Recipe myRecipe;
 
         public RecipesViewHolder(@NonNull View itemView) {
             super(itemView);
             profilePic=itemView.findViewById(R.id.profile_profile_im);
             nickname = itemView.findViewById(R.id.listRow_nickname);
             recipeTitle=itemView.findViewById(R.id.listRow_titleRec);
-            recipe= itemView.findViewById(R.id.listRow_recipe);
             category= itemView.findViewById(R.id.listRow_category);
             postImg=itemView.findViewById(R.id.listRow_img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("Tag","position is: "+ position);
                     listener.onItemClick(position);
                 }
             });
@@ -122,9 +178,13 @@ public class AllPosts extends Fragment {
         public void bindData(Recipe recipe, int position) {
             nickname.setText(recipe.getUserName());
             recipeTitle.setText(recipe.getTitleRecipe());
-            this.recipe.setText(recipe.getRecipe());
             category.setText(recipe.getCategory());
             this.position= position;
+            myRecipe = recipe;
+            postImg.setImageResource(R.drawable.recipe_placeholder);
+            if(recipe.getImageUrl()!=null){
+                Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(postImg);
+            }
         }
     }
 
@@ -143,8 +203,9 @@ public class AllPosts extends Fragment {
         @NonNull
         @Override
         public RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.list_row, null);
-            RecipesViewHolder holder = new RecipesViewHolder(view);
+            //View view = getLayoutInflater().inflate(R.layout.list_row, null);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.list_row, parent, false);
+            AllPosts.RecipesViewHolder holder = new AllPosts.RecipesViewHolder(view);
             holder.listener = listener;
             return holder;
         }
@@ -153,6 +214,13 @@ public class AllPosts extends Fragment {
         public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
             Recipe recipe = data.get(position);
             holder.bindData(recipe, position);
+//            holder.nickname.setText(recipe.getUserName());
+//            holder.category.setText(recipe.getCategory());
+//            //holder.recipeTV.setText(recipe.getRecipe());
+//            holder.recipeTitle.setText(recipe.getTitleRecipe());
+
+
+
         }
 
         @Override

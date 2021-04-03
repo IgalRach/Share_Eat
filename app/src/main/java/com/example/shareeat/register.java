@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.shareeat.model.ModelFirebase;
 import com.example.shareeat.model.User;
@@ -17,13 +18,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import org.w3c.dom.Text;
+
 public class register extends AppCompatActivity {
 
     EditText fullNameInput;
     EditText passwordInput;
     EditText emailInput;
     Button registerBtn;
-    Button moveToLoginBtn;
+    TextView moveToLoginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
