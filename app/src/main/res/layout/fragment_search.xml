@@ -46,7 +46,7 @@
         tools:text="Search" />
 
     <Button
-        android:id="@+id/button17"
+        android:id="@+id/search_kosher"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
@@ -171,7 +171,7 @@
         app:backgroundTint="#8A6939"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button17"
+        app:layout_constraintStart_toEndOf="@+id/search_kosher"
         app:layout_constraintTop_toBottomOf="@+id/search_desert" />
 
 

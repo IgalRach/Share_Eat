@@ -45,6 +45,12 @@ public class Model {
         return recipeList;
     }
 
+    public LiveData<List<Recipe>> getRecipesByCategory(String category) {
+        recipeList= AppLocalDb.db.recipeDao().getRecipesByCategory(category);
+        refreshAllRecipes(null);
+        return recipeList;
+    }
+
     public LiveData<List<Recipe>> getAllRecipesPerUser(String userId) {
         recipeList = AppLocalDb.db.recipeDao().getUserRecipes(userId);
         refreshAllRecipes(null);

@@ -62,8 +62,8 @@
     <fragment
         android:id="@+id/recipeDetails"
         android:name="com.example.shareeat.RecipeDetails"
-        android:label="fragment_recipe_details"
-        tools:layout="@layout/fragment_recipe_details" >
+        android:label="Details"
+        tools:layout="@layout/fragment_recipe_details">
         <argument
             android:name="recipeId"
             app:argType="string" />
@@ -71,8 +71,8 @@
     <fragment
         android:id="@+id/result"
         android:name="com.example.shareeat.result"
-        android:label="fragment_result"
-        tools:layout="@layout/fragment_result" >
+        android:label="Search Result"
+        tools:layout="@layout/fragment_result">
         <argument
             android:name="category"
             app:argType="string" />

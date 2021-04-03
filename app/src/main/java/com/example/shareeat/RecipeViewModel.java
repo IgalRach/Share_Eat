@@ -22,6 +22,11 @@ public class RecipeViewModel extends ViewModel {
         recipeLiveData = Model.instance.getAllRecipes();
     }
 
+    public LiveData<List<Recipe>> getRecipesByCategory(String categoryId){
+            recipeLiveData = Model.instance.getRecipesByCategory(categoryId);
+        return recipeLiveData;
+    }
+
     public LiveData<List<Recipe>> getData() {
         return recipeLiveData;
     }

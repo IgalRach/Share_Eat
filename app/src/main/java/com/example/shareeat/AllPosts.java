@@ -95,7 +95,6 @@ public class AllPosts extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(layoutManager);
 
-        pb.setVisibility(View.INVISIBLE);
         
         adapter = new RecipesAdapter();
         list.setAdapter(adapter);
@@ -121,7 +120,7 @@ public class AllPosts extends Fragment {
         });
 
         reverseData(data);
-        //reloadData();
+     //   reloadData();
         return view;
     }
 
