@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.ShareEat" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#AAA1A1</item>
+        <item name="colorPrimary">#A18760</item>
         <item name="colorPrimaryVariant">#989395</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

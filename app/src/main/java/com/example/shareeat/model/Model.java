@@ -1,19 +1,19 @@
 package com.example.shareeat.model;
 
 
-import android.app.Activity;
-import java.util.LinkedList;
 import java.util.List;
 
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.*;
 import com.example.shareeat.model.ModelFirebase;
 
+
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.shareeat.MyApplication;
 
@@ -29,6 +29,10 @@ public class Model {
         void onComplete(T result);
     }
 
+    public interface GetAllRecipesListener2{
+        void onComplete(List<Recipe> myRecipes);
+    }
+
     public interface GetAllRecipesListener{
         void onComplete();
     }
@@ -36,10 +40,14 @@ public class Model {
     LiveData<List<Recipe>> recipeList;
 
     public LiveData<List<Recipe>> getAllRecipes(){
-        if (recipeList==null){
-            recipeList = modelSql.getAllRecipes();
-            refreshAllRecipes(null);
-        }
+        recipeList = (LiveData<List<Recipe>>) AppLocalDb.db.recipeDao().getAllRecipes();
+        refreshAllRecipes(null);
+        return recipeList;
+    }
+
+    public LiveData<List<Recipe>> getAllRecipesPerUser(String userId) {
+        recipeList = AppLocalDb.db.recipeDao().getUserRecipes(userId);
+        refreshAllRecipes(null);
         return recipeList;
     }
 
@@ -50,25 +58,29 @@ public class Model {
 
         //get all updated record from firebase from the last updated
         modelFirebase.getAllRecipes(lastUpdated, new ModelFirebase.GetAllRecipesListener() {
+            @SuppressLint("StaticFieldLeak")
             @Override
-            public void onComplete(List<Recipe> data) {
-                //insert the new updated to the localdb
-                long lastUpdated = 0;
-                for (Recipe rcp : data){
-                    modelSql.addRecipe(rcp, null);
-                    if (rcp.getUpdatedDate()>lastUpdated){
-                        lastUpdated = rcp.getUpdatedDate();
+            public void onComplete(final List<Recipe> data) {
+                new AsyncTask<String,String,String>(){
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        long lastUpdated = 0;
+                        for(Recipe recipe : data){
+                            AppLocalDb.db.recipeDao().insertAll(recipe);
+                            if (recipe.getUpdatedDate() > lastUpdated) lastUpdated = recipe.getUpdatedDate();
+                        }
+                        SharedPreferences.Editor edit = MyApplication.context.getSharedPreferences("TAG",Context.MODE_PRIVATE).edit();
+                        edit.putLong("RecipesLastUpdateDate",lastUpdated);
+                        edit.commit();
+                        return "";
                     }
-                }
-                //update the local last update date
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putLong("lastUpdated", lastUpdated);
-                editor.commit();
-
-                //return the updated data to listeners
-                if (listener != null){
-                    listener.onComplete();
-                }
+                    @Override
+                    protected void onPostExecute(String s) {
+//                        super.onPostExecute(s);
+//                        cleanLocalDb();
+//                        if (listener!=null)  listener.onComplete();
+                    }
+                }.execute("");
             }
         });
     }
@@ -85,19 +97,14 @@ public class Model {
         void onComplete();
     }
     public void addRecipe(final Recipe recipe,final AddRecipeListener listener) {
-        modelFirebase.addRecipe(recipe, new AddRecipeListener() {
+        modelFirebase.addRecipe(recipe, listener);
+        new AsyncTask<String, String, String>() {
             @Override
-            public void onComplete() {
-                refreshAllRecipes(new GetAllRecipesListener() {
-                    @Override
-                    public void onComplete() {
-                        listener.onComplete();
-                    }
-                });
+            protected String doInBackground(String... strings) {
+                AppLocalDb.db.recipeDao().insertAll(recipe);
+                return "";
             }
-        });
-        //AppLocalDb.db.recipeDao().insertAll(recipe);
-        //modelSql.addRecipe(recipe, listener);
+        }.execute();
     }
 
 

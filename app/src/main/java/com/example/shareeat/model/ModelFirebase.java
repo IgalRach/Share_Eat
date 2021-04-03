@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.shareeat.MyApplication;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +40,7 @@ import java.io.ByteArrayOutputStream;
 
 public class ModelFirebase {
 
-    interface GetAllRecipesListener{
+    public interface GetAllRecipesListener{
         void onComplete(List<Recipe> list);
     }
     public void addRecipe(Recipe recipe, final Model.AddRecipeListener listener) {
@@ -138,6 +139,7 @@ public class ModelFirebase {
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     Toast.makeText(MyApplication.context, "User registered", Toast.LENGTH_SHORT).show();
+                    //uploadUserData(fullName, email);
                     listener.onComplete();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -154,7 +156,59 @@ public class ModelFirebase {
         }
     }
 
+    public static void uploadUserData(final String fullName, final String email){
 
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //StorageReference storageReference = FirebaseStorage.getInstance().getReference("images");
+
+//        if (imageUri != null){
+//            String imageName = username + "." + getExtension(imageUri);
+//            final StorageReference imageRef = storageReference.child(imageName);
+
+//            UploadTask uploadTask = imageRef.putFile(imageUri);
+//            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+//                @Override
+//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+//                    if (!task.isSuccessful()){
+//                        throw task.getException();
+//                    }
+//                    return imageRef.getDownloadUrl();
+//                }
+//            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Uri> task) {
+//                    if (task.isSuccessful()){
+
+                        Map<String,Object> data = new HashMap<>();
+                        //data.put("profileImageUrl", task.getResult().toString());
+                        data.put("fullName", fullName);
+                        data.put("email", email);
+                        //data.put("info", "NA");
+                        db.collection("userProfileData").document(email).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                if (firebaseAuth.getCurrentUser() != null){
+                                    firebaseAuth.signOut();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MyApplication.context, "Fails to create user and upload data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+//                    }
+//                    else if (!task.isSuccessful()){
+//                        Toast.makeText(MyApplication.context, task.getException().toString(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+//        }
+//        else {
+//            Toast.makeText(FoodyApp.context, "Please choose a profile image", Toast.LENGTH_SHORT).show();
+//        }
+    }
 
     public static void loginUser(final String email, String password, final Listener<Boolean> listener){
 

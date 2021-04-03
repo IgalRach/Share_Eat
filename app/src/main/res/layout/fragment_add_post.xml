@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#1B757171"
     android:visibility="visible"
     tools:context=".AddPost">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+      
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -27,16 +28,17 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
+                android:fontFamily="@font/bold"
                 android:inputType="none"
                 android:text="Create Post"
                 android:textAlignment="center"
-                android:textColor="#2E2C2C"
+                android:textColor="#000000"
+                android:textColorHint="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
 
 
@@ -54,6 +56,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_recipeName"
                 tools:ignore="MissingConstraints" />
+         
 
             <EditText
                 android:id="@+id/addPost_Recipe"
@@ -63,26 +66,33 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/textview_border"
+                android:fontFamily="@font/regular"
                 android:hint="Recipe"
                 android:inputType="textLongMessage|textMultiLine"
                 android:textSize="24sp"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_Category" />
+          
 
-            <Button
-                android:id="@+id/addPost_uploadPic_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:text="Upload A Photo"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addPost_Recipe" />
+          
+              <Button
+                  android:id="@+id/addPost_uploadPic_btn"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/regular"
+        android:text="Upload A Photo"
+        android:textSize="18sp"
+        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addPost_Recipe" />
 
             <Button
                 android:id="@+id/addPost_add_btn"
@@ -91,11 +101,15 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
+                android:fontFamily="@font/regular"
                 android:text="Add"
                 android:textSize="18sp"
+                app:backgroundTint="#CB53AA2D"
+                app:cornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_uploadPic_btn" />
+          
 
             <EditText
                 android:id="@+id/addPost_recipeName"
@@ -106,12 +120,17 @@
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/textview_border"
                 android:ems="10"
+                android:fontFamily="@font/regular"
                 android:hint="Recipe Name"
                 android:inputType="textPersonName"
+                android:inputType="textPersonName"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_Title" />
+
 
             <Button
                 android:id="@+id/addPost_cancel_btn"
@@ -120,12 +139,14 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
+                android:fontFamily="@font/regular"
                 android:text="Cancel"
                 android:textSize="18sp"
+                app:backgroundTint="#C4F11A1A"
+                app:cornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_add_btn" />
-
 
 
             <ImageView
@@ -139,6 +160,7 @@
                 tools:src="@tools:sample/avatars" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 
     <ProgressBar
         android:id="@+id/addPost_progressBar"
