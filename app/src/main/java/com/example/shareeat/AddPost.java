@@ -70,7 +70,7 @@ public class AddPost extends Fragment {
         cancelBtn = view.findViewById(R.id.addPost_cancel_btn);
         pb = view.findViewById(R.id.addPost_progressBar);
         pb.setVisibility(View.INVISIBLE);
-        avatarImageView.setVisibility(View.INVISIBLE);
+        //avatarImageView.setVisibility(View.INVISIBLE);
 
         //category spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
@@ -231,6 +231,11 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
                             avatarImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                             cursor.close();
                         }
+                    }
+                    if (selectedImage.equals(""))
+                    {
+                        avatarImageView.setImageResource(R.drawable.recipe_placeholder);
+                        Log.d("Test", "Empty");
                     }
                 }
                 break;

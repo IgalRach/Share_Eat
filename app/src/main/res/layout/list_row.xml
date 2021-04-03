@@ -22,20 +22,20 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#D2000000">
 
-            <ImageView
-                android:id="@+id/listRow_img"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/listRow_img"-->
+            <!--                android:layout_width="100dp"-->
+            <!--                android:layout_height="100dp"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:layout_marginEnd="8dp"-->
+            <!--                android:layout_marginBottom="8dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                tools:ignore="MissingConstraints" />-->
 
             <TextView
                 android:id="@+id/listRow_category"
@@ -50,7 +50,7 @@
                 app:layout_constraintStart_toEndOf="@+id/profile_profile_im"
                 app:layout_constraintTop_toBottomOf="@+id/listRow_titleRec" />
 
-          
+
             <TextView
                 android:id="@+id/listRow_titleRec"
                 android:layout_width="wrap_content"
@@ -65,18 +65,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/listRow_nickname"
                 tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/listRow_img"
-        android:layout_width="0dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listRow_category"
-        tools:ignore="MissingConstraints"
-        tools:srcCompat="@drawable/recipe_placeholder" />
+            <ImageView
+                android:id="@+id/listRow_img"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listRow_category"
+                tools:ignore="MissingConstraints"
+                tools:srcCompat="@drawable/recipe_placeholder" />
 
             <TextView
                 android:id="@+id/listRow_nickname"

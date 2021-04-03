@@ -215,7 +215,7 @@ public class AllPosts extends Fragment {
             holder.bindData(recipe, position);
             holder.nickname.setText(recipe.getUserName());
             holder.category.setText(recipe.getCategory());
-            holder.recipe.setText(recipe.getRecipe());
+            //holder.recipeTV.setText(recipe.getRecipe());
             holder.recipeTitle.setText(recipe.getTitleRecipe());
 
             holder.postImg.setImageResource(R.drawable.recipe_placeholder);

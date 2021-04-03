@@ -35,7 +35,7 @@ public class RecipeDetails extends AddPost {
         recipeEditText.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
         addBtn.setVisibility(View.INVISIBLE);
-        Imageurl.setVisibility(View.INVISIBLE);
+       // Imageurl.setVisibility(View.INVISIBLE);
         recipeId = RecipeDetailsArgs.fromBundle(getArguments()).getRecipeId();
 
         Model.instance.getRecipe(recipeId, new Model.GetRecipeListener() {

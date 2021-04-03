@@ -27,6 +27,7 @@ import com.example.shareeat.model.ModelFirebase;
 import com.example.shareeat.model.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -202,6 +203,11 @@ public class profile extends Fragment {
         public void onBindViewHolder(@NonNull MyRecipesViewHolder holder, int position) {
             Recipe recipe = data.get(position);
             holder.bindData(recipe);
+
+            holder.postImg.setImageResource(R.drawable.recipe_placeholder);
+            if(recipe.getImageUrl()!=null){
+                Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(holder.postImg);
+            }
         }
 
         @Override
