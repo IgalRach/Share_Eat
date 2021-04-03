@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/editProfile" />
+        <action
+            android:id="@+id/action_profile_to_recipeDetails"
+            app:destination="@id/recipeDetails" />
     </fragment>
     <fragment
         android:id="@+id/editProfile"

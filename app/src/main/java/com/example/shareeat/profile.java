@@ -1,10 +1,12 @@
 package com.example.shareeat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -21,32 +23,45 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.shareeat.model.Model;
+import com.example.shareeat.model.ModelFirebase;
 import com.example.shareeat.model.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class profile extends Fragment {
 
-    RecipeViewModel viewModelProfile;
-    ProgressBar pbProfile;
+    String userId;
     RecyclerView listProfile;
-    RecipesAdapter adapterProfile;
+
+    List<Recipe> data = new LinkedList<Recipe>();
+    profile.MyRecipesAdapter adapterProfile;
+    MyRecipeViewModel viewModelProfile;
+    LiveData<List<Recipe>> liveData;
+    ProgressBar pbProfile;
+
+    public profile(){}
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
-        viewModelProfile = new ViewModelProvider(this).get(RecipeViewModel.class);
+        viewModelProfile = new ViewModelProvider(this).get(MyRecipeViewModel.class);
+
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         TextView nameUser = view.findViewById(R.id.profile_title);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        nameUser.setText(user.getDisplayName());
-
+        nameUser.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         Button signOut = view.findViewById(R.id.signoutBtn);
         Button editProfileBtn= view.findViewById(R.id.profile_Edit_Btn);
 
@@ -67,81 +82,98 @@ public class profile extends Fragment {
             }
         });
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
         listProfile = view.findViewById(R.id.profile_list);
         listProfile.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         listProfile.setLayoutManager(layoutManager);
 
-        adapterProfile = new RecipesAdapter();
+        adapterProfile = new MyRecipesAdapter();
         listProfile.setAdapter(adapterProfile);
 
         adapterProfile.setOnClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
-                Log.d("TAG", "row was clicked " + viewModelProfile.getData().getValue().get(position).getTitleRecipe());
+                Recipe recipe = data.get(position);
+                profileDirections.ActionProfileToRecipeDetails direction = profileDirections.actionProfileToRecipeDetails(recipe.getId());
+                Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
+                Log.d("TAG", "row was clicked " + data.get(position));
             }
         });
 
-        viewModelProfile.getData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+        liveData = viewModelProfile.getDataByUser(userId);
+        liveData.observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
+                List<Recipe> reverseData = reverseData(recipes);
+                data = reverseData;
                 adapterProfile.notifyDataSetChanged();
-            }
+                }
         });
-        reloadData();
+
+        reverseData(data);
+        //reloadData();
         return view;
     }
 
-    public void reloadData(){
-//        pbProfile.setVisibility(View.VISIBLE);
-        Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
-            @Override
-            public void onComplete() {
-               // pbProfile.setVisibility(View.INVISIBLE);
-            }
-        });
+    private List<Recipe> reverseData(List<Recipe> recipes) {
+        List<Recipe> reversedData = new LinkedList<>();
+        for (Recipe recipe: recipes) {
+            reversedData.add(0, recipe);
+        }
+        return reversedData;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    //    public void reloadData(){
+////        pbProfile.setVisibility(View.VISIBLE);
+//        Model.instance.getAllRecipesPerUser2(currentUser.getUid()) {
+//            @Override
+//            public void onComplete(List<Recipe> list) {
+//                adapterProfile.notifyDataSetChanged();
+//            }
+//        });
+//    }
+
     /////////////////////////////////////////////////////////Class ViewHolder
-    class RecipesViewHolder extends RecyclerView.ViewHolder{
+    static class MyRecipesViewHolder extends RecyclerView.ViewHolder{
 
         public OnItemClickListener listener;
         CircleImageView profilePic;
         TextView nickname;
         TextView recipeTitle;
-        TextView recipe;
         TextView category;
         ImageView postImg;
-        int position;
 
-        public RecipesViewHolder(@NonNull View itemView) {
+        public MyRecipesViewHolder(@NonNull View itemView, final profile.OnItemClickListener listener) {
             super(itemView);
             profilePic=itemView.findViewById(R.id.profile_profile_im);
             nickname = itemView.findViewById(R.id.listRow_nickname);
             recipeTitle=itemView.findViewById(R.id.listRow_titleRec);
-            recipe= itemView.findViewById(R.id.listRow_recipe);
             category= itemView.findViewById(R.id.listRow_category);
             postImg=itemView.findViewById(R.id.listRow_img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("Tag","position is: "+ position);
-                    listener.onItemClick(position);
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        Log.d("Tag","position is: "+ position);
+                        if (position != RecyclerView.NO_POSITION)
+                            listener.onItemClick(position);
+                    }
                 }
             });
         }
 
-        public void bindData(Recipe recipe, int position) {
+        public void bindData(Recipe recipe) {
             nickname.setText(recipe.getUserName());
             recipeTitle.setText(recipe.getTitleRecipe());
-            this.recipe.setText(recipe.getRecipe());
             category.setText(recipe.getCategory());
-            this.position= position;
         }
     }
 
@@ -150,7 +182,7 @@ public class profile extends Fragment {
     }
 
     /////////////////////////////////////////////////////////Class Adapter
-    class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
+    class MyRecipesAdapter extends RecyclerView.Adapter<MyRecipesViewHolder> {
 
         private OnItemClickListener listener;
 
@@ -159,24 +191,22 @@ public class profile extends Fragment {
         }
         @NonNull
         @Override
-        public RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.list_row, null);
-            RecipesViewHolder holder = new RecipesViewHolder(view);
-            holder.listener = listener;
-            return holder;
+        public MyRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            //View view = getLayoutInflater().inflate(R.layout.list_row, null);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.list_row, parent, false);
+            profile.MyRecipesViewHolder user = new profile.MyRecipesViewHolder(view, listener);
+            return user;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
-            Recipe recipe = viewModelProfile.getData().getValue().get(position);
-            holder.bindData(recipe, position);
+        public void onBindViewHolder(@NonNull MyRecipesViewHolder holder, int position) {
+            Recipe recipe = data.get(position);
+            holder.bindData(recipe);
         }
 
         @Override
         public int getItemCount() {
-            if (viewModelProfile.getData().getValue() == null){
-                return 0; }
-            return viewModelProfile.getData().getValue().size();
+            return data.size();
         }
 
 

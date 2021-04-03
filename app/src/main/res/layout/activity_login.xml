@@ -9,27 +9,12 @@
     tools:context=".login">
 
 
-    <TextView
-        android:id="@+id/login_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:fontFamily="@font/bold"
-        android:text="Easy Cook"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/login_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.827" />
-
     <EditText
         android:id="@+id/login_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
-        android:background="#B9FBF6F6"
+        android:background="@drawable/textview_border"
         android:drawableStart="@drawable/ic_baseline_email_24"
         android:drawablePadding="12dp"
         android:ems="10"
@@ -39,15 +24,16 @@
         android:padding="3dp"
         app:layout_constraintBottom_toTopOf="@+id/movetoRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/login_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="90dp"
-        android:background="#B9FBF6F6"
+        android:background="@drawable/textview_border"
         android:drawableStart="@drawable/ic_baseline_lock_24"
         android:drawablePadding="12dp"
         android:ems="10"
@@ -68,6 +54,7 @@
         android:fontFamily="@font/regular"
         android:text="Login"
         android:textAllCaps="false"
+        android:textSize="20sp"
         app:backgroundTint="#AD040404"
         app:cornerRadius="20sp"
         app:layout_constraintBottom_toTopOf="@+id/movetoRegister"
@@ -76,16 +63,15 @@
         app:layout_constraintTop_toBottomOf="@+id/login_password"
         app:layout_constraintVertical_bias="1.0" />
 
-    <Button
+    <TextView
         android:id="@+id/movetoRegister"
-        android:layout_width="162dp"
-        android:layout_height="53dp"
-        app:cornerRadius="20sp"
-        android:textAllCaps="false"
-        android:fontFamily="@font/regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
-        app:backgroundTint="#AD040404"
-        android:text="Register"
+        android:fontFamily="@font/regular"
+        android:text="New Here? Create Account"
+        android:textAllCaps="false"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
@@ -101,6 +87,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movetoRegister" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shareeat_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

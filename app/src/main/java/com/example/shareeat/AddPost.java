@@ -47,7 +47,6 @@ public class AddPost extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_add_post, container, false);
-
         recipeNameEditText= view.findViewById(R.id.addPost_recipeName);
         recipeEditText= view.findViewById(R.id.addPost_Recipe);
         String [] categories ={"","Italian","Spicy","French","Meat","Dairy","Fish","Kosher","Dessert",};
