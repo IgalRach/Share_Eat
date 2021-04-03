@@ -26,6 +26,7 @@ public class RecipeDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view= inflater.inflate(R.layout.fragment_recipe_details, container, false);
 //        title = view.findViewById(R.id.addPost_Title);
 //        title.setText("Recipe Details");

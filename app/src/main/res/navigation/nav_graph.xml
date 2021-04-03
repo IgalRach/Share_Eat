@@ -26,7 +26,11 @@
         android:id="@+id/fragment_search"
         android:name="com.example.shareeat.Fragment_search"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_fragment_search_to_result"
+            app:destination="@id/result" />
+    </fragment>
     <fragment
         android:id="@+id/favorites"
         android:name="com.example.shareeat.favorites"
@@ -62,6 +66,15 @@
         tools:layout="@layout/fragment_recipe_details" >
         <argument
             android:name="recipeId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/result"
+        android:name="com.example.shareeat.result"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="category"
             app:argType="string" />
     </fragment>
 

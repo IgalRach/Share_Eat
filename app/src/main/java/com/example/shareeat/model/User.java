@@ -4,6 +4,8 @@ import android.widget.EditText;
 
 import androidx.room.Entity;
 
+import java.util.List;
+
 
 @Entity
 public class User {
@@ -15,6 +17,7 @@ public class User {
     public String fullName;
     public String email;
     public String password;
+    public String profilePic;
 
     public User(){
         id = null;
