@@ -5,15 +5,21 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -21,35 +27,42 @@ public class RecipeDetails extends Fragment {
 
     String recipeId;
     Recipe rcp;
-    TextView title;
+    TextView recipeTitle;
+    TextView nickname;
+    TextView category;
+    TextView detailRecipe;
+    ImageView closeWindow;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view= inflater.inflate(R.layout.fragment_recipe_details, container, false);
-//        title = view.findViewById(R.id.addPost_Title);
-//        title.setText("Recipe Details");
 
-//        recipeNameEditText.setEnabled(false);
-//        recipeEditText.setEnabled(false);
-//        spinner.setEnabled(false);
-//
-//        recipeNameEditText.setBackgroundColor(Color.parseColor("#D2000000"));
-//        recipeEditText.setBackgroundColor(Color.parseColor("#D2000000"));
-//        addBtn.setVisibility(View.INVISIBLE);
-//        Imageurl.setVisibility(View.INVISIBLE);
+        nickname = view.findViewById(R.id.details_nickname);
+        recipeTitle = view.findViewById(R.id.details_recipeTitle);
+        category = view.findViewById(R.id.details_category);
+        detailRecipe = view.findViewById(R.id.deatils_detailRecipe);
+        closeWindow = view.findViewById(R.id.details_closeImg);
         recipeId = RecipeDetailsArgs.fromBundle(getArguments()).getRecipeId();
 
         Model.instance.getRecipe(recipeId, new Model.GetRecipeListener() {
             @Override
             public void onComplete(Recipe recipe) {
                 rcp = recipe;
-//                recipeNameEditText.setText(rcp.getTitleRecipe());
-//                recipeEditText.setText(rcp.getRecipe());
+                nickname.setText(rcp.getUserName());
+                recipeTitle.setText(rcp.getTitleRecipe());
+                category.setText(rcp.getCategory());
+                detailRecipe.setText(rcp.getRecipe());
             }
         });
 
+        closeWindow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).popBackStack();
+            }
+        });
         return view;
     }
 }
