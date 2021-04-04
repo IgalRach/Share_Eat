@@ -119,7 +119,7 @@ public class AddPost extends Fragment {
 
 
     private void addRecipe(View view){
-        if (recipeNameEditText.getText().length() == 0 || recipeEditText.getText().length() == 0) {
+        if (recipeNameEditText.getText().length() == 0 || recipeEditText.getText().length() == 0 || category.length() == 0) {
             Snackbar.make(view, "You must fill all the fields", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             Log.d("TAG", "Some of the fields are empty.");

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -31,6 +32,8 @@ public class RecipeDetails extends Fragment {
     TextView nickname;
     TextView category;
     TextView detailRecipe;
+    ImageView pictureRecipe;
+
     ImageView closeWindow;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +47,7 @@ public class RecipeDetails extends Fragment {
         category = view.findViewById(R.id.details_category);
         detailRecipe = view.findViewById(R.id.deatils_detailRecipe);
         closeWindow = view.findViewById(R.id.details_closeImg);
+        pictureRecipe = view.findViewById(R.id.details_image);
         recipeId = RecipeDetailsArgs.fromBundle(getArguments()).getRecipeId();
 
         Model.instance.getRecipe(recipeId, new Model.GetRecipeListener() {
@@ -54,6 +58,10 @@ public class RecipeDetails extends Fragment {
                 recipeTitle.setText(rcp.getTitleRecipe());
                 category.setText(rcp.getCategory());
                 detailRecipe.setText(rcp.getRecipe());
+                pictureRecipe.setImageResource(R.drawable.recipe_placeholder);
+                if(recipe.getImageUrl()!=null){
+                    Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(pictureRecipe);
+                }
             }
         });
 
