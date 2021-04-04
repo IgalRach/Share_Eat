@@ -43,6 +43,7 @@ public class ModelFirebase {
     public interface GetAllRecipesListener{
         void onComplete(List<Recipe> list);
     }
+
     public void addRecipe(Recipe recipe, final Model.AddRecipeListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("recipes")
@@ -61,6 +62,7 @@ public class ModelFirebase {
             }
         });
     }
+
 
     public void getAllRecipes(Long lastUpdated, final GetAllRecipesListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

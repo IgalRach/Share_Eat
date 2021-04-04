@@ -175,7 +175,7 @@ public class AddPost extends Fragment {
 
     }
 
-    private void displayFailedError() {
+    public void displayFailedError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Operation Failed");
         builder.setMessage("Saving image failed, please try again later...");

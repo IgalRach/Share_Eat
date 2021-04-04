@@ -73,8 +73,7 @@ public class RecipeDetails extends Fragment {
                 if (recipe.getImageUrl() != null) {
                     Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(pictureRecipe);
                 }
-                Log.d("TAG","userId: "+user.getUid());
-                Log.d("TAG","recipe userId: "+rcp.getUserId());
+
                 if(rcp.getUserId().equals(user.getUid())){
                     edit_btn.setVisibility(View.VISIBLE);
                     deleteRecipe.setVisibility(View.VISIBLE);
