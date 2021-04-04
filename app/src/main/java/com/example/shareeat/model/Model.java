@@ -82,9 +82,10 @@ public class Model {
                     }
                     @Override
                     protected void onPostExecute(String s) {
-//                        super.onPostExecute(s);
-//                        cleanLocalDb();
-//                        if (listener!=null)  listener.onComplete();
+                        super.onPostExecute(s);
+                        //cleanLocalDb();
+                        if (listener!=null)
+                            listener.onComplete();
                     }
                 }.execute("");
             }

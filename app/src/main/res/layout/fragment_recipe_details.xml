@@ -10,10 +10,10 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,21 +26,18 @@
             android:background="#D2000000">
 
             <ImageView
-                android:id="@+id/listRow_img"
+                android:id="@+id/details_image"
                 android:layout_width="367dp"
                 android:layout_height="275dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_recipe"
+                app:layout_constraintTop_toBottomOf="@+id/deatils_detailRecipe"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/listRow_category"
+                android:id="@+id/details_category"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
@@ -51,10 +48,10 @@
                 android:textColorHint="#FFFFFF"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_profile_im"
-                app:layout_constraintTop_toBottomOf="@+id/listRow_titleRec" />
+                app:layout_constraintTop_toBottomOf="@+id/details_recipeTitle" />
 
             <TextView
-                android:id="@+id/listRow_titleRec"
+                android:id="@+id/details_recipeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -64,11 +61,11 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_profile_im"
-                app:layout_constraintTop_toBottomOf="@+id/listRow_nickname"
+                app:layout_constraintTop_toBottomOf="@+id/details_nickname"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/listRow_nickname"
+                android:id="@+id/details_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
@@ -95,7 +92,7 @@
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/textview_recipe"
+                android:id="@+id/deatils_detailRecipe"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -108,7 +105,37 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/profile_profile_im"
-                app:layout_constraintTop_toBottomOf="@+id/listRow_category" />
+                app:layout_constraintTop_toBottomOf="@+id/details_category" />
+
+            <ImageView
+                android:id="@+id/details_closeImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_close_24" />
+
+            <ImageView
+                android:id="@+id/details_deleteImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/details_closeImg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+            <ImageView
+                android:id="@+id/details_editImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/details_deleteImg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_edit_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

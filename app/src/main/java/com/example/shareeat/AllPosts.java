@@ -17,15 +17,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
@@ -33,7 +27,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NavigableMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -72,23 +65,6 @@ public class AllPosts extends Fragment {
             }
         });
 
-        // Swipe to refresh
-        sref = view.findViewById(R.id.meal_list_swipe);
-        sref.setOnRefreshListener(() -> {
-            sref.setRefreshing(true);
-            pb.setVisibility(View.VISIBLE);
-            //fab.setEnabled(false);
-            Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
-                @Override
-                public void onComplete() {
-                    sref.setRefreshing(false);
-                    pb.setVisibility(View.INVISIBLE);
-                    //fab.setEnabled(true);
-                }
-            });
-        });
-
-
         list = view.findViewById(R.id.main_recycler_v);
         list.setHasFixedSize(true);
 
@@ -116,6 +92,20 @@ public class AllPosts extends Fragment {
                 List<Recipe> reverseData = reverseData(recipes);
                 data = reverseData;
                 adapter.notifyDataSetChanged();
+            }
+        });
+
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.recipe_list_swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
+                    @Override
+                    public void onComplete() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+
             }
         });
 

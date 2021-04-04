@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,6 +111,20 @@ public class profile extends Fragment {
                 data = reverseData;
                 adapterProfile.notifyDataSetChanged();
                 }
+        });
+
+        final SwipeRefreshLayout profileSwipe = view.findViewById(R.id.recipeProfile_list_swipe);
+        profileSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
+                    @Override
+                    public void onComplete() {
+                        profileSwipe.setRefreshing(false);
+                    }
+                });
+
+            }
         });
 
         reverseData(data);

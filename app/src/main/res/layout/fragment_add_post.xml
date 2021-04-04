@@ -68,17 +68,19 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
+                android:autoText="false"
                 android:background="@drawable/style_recipedetails"
                 android:fontFamily="@font/regular"
+                android:gravity="start"
                 android:hint="Recipe"
                 android:inputType="textLongMessage|textMultiLine"
+                android:textAlignment="viewStart"
                 android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF"
-                android:textSize="24sp"
+                android:textColorHint="#90FFFFFF"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_Category" />
-
 
             <Button
                 android:id="@+id/addPost_uploadPic_btn"
@@ -123,11 +125,11 @@
                 android:background="@drawable/style_recipedetails"
                 android:ems="10"
                 android:fontFamily="@font/regular"
-                android:hint="Recipe Name"
+                android:hint=" Recipe Name"
                 android:inputType="textPersonName"
                 android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF"
-                android:textSize="24sp"
+                android:textColorHint="#90FFFFFF"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_Title" />
@@ -154,10 +156,13 @@
                 android:id="@+id/addPost_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addPost_cancel_btn"
+                app:layout_constraintVertical_bias="1.0"
                 tools:src="@drawable/recipe_placeholder" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
