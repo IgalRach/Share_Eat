@@ -67,6 +67,9 @@
         <argument
             android:name="recipeId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_recipeDetails_to_editRecipe"
+            app:destination="@id/editRecipe" />
     </fragment>
     <fragment
         android:id="@+id/result"
@@ -75,6 +78,18 @@
         tools:layout="@layout/fragment_result">
         <argument
             android:name="category"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_result_to_recipeDetails"
+            app:destination="@id/recipeDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/editRecipe"
+        android:name="com.example.shareeat.EditRecipe"
+        android:label="Edit Recipe"
+        tools:layout="@layout/fragment_edit_recipe" >
+        <argument
+            android:name="recipeId"
             app:argType="string" />
     </fragment>
 

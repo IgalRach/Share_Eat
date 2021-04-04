@@ -44,7 +44,6 @@ import static android.app.Activity.RESULT_OK;
 public class AddPost extends Fragment {
 
 
-    TextView pageTitle;
     EditText recipeNameEditText;
     Spinner spinner;//category
     String category;
@@ -54,7 +53,6 @@ public class AddPost extends Fragment {
     Button addBtn;
     Button cancelBtn;
     ProgressBar pb;
-    Uri addImageUri;
     boolean isExist=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
