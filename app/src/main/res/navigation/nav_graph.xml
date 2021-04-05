@@ -76,6 +76,9 @@
         <argument
             android:name="category"
             app:argType="string" />
+        <action
+            android:id="@+id/action_result_to_recipeDetails"
+            app:destination="@id/recipeDetails" />
     </fragment>
 
 </navigation>

@@ -124,7 +124,15 @@ public class Model {
 
     public interface DeleteRecipeListener extends AddRecipeListener {}
     public void deleteRecipe(Recipe recipe, DeleteRecipeListener listener){
+        modelFirebase.deleteRecipe(recipe);
         modelFirebase.delete(recipe, listener);
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                AppLocalDb.db.recipeDao().deleteRecipe(recipe);
+                return "";
+            }
+        }.execute();
 
     }
 

@@ -40,11 +40,25 @@ import java.io.ByteArrayOutputStream;
 
 public class ModelFirebase {
 
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    public void deleteRecipe(Recipe recipe) {
+        db.collection("Deleted Recipes")
+                .document(recipe.getId()).set(recipe.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("TAG", "********* Recipe remove Successfully ************");
+            }
+
+        });
+    }
+
     public interface GetAllRecipesListener{
         void onComplete(List<Recipe> list);
     }
     public void addRecipe(Recipe recipe, final Model.AddRecipeListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("recipes")
                 .document(recipe.getId()).set(recipe.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -63,7 +77,6 @@ public class ModelFirebase {
     }
 
     public void getAllRecipes(Long lastUpdated, final GetAllRecipesListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp ts = new Timestamp(lastUpdated, 0);
         db.collection("recipes").whereGreaterThan("lastUpdated", ts)
                 .get()
@@ -88,7 +101,6 @@ public class ModelFirebase {
     }
 
     public void getRecipe(String id, final Model.GetRecipeListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("recipes").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -110,8 +122,6 @@ public class ModelFirebase {
     }
 
     public void delete(Recipe recipe, Model.DeleteRecipeListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         db.collection("recipes").document(recipe.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -126,8 +136,6 @@ public class ModelFirebase {
     }
 
     public static void registerUserAccount(final String fullName, String password, final String email, final Listener<Boolean> listener) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
         if (firebaseAuth.getCurrentUser() != null){
             firebaseAuth.signOut();
         }
@@ -157,9 +165,6 @@ public class ModelFirebase {
     }
 
     public static void uploadUserData(final String fullName, final String email){
-
-        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         //StorageReference storageReference = FirebaseStorage.getInstance().getReference("images");
 
 //        if (imageUri != null){
@@ -211,9 +216,6 @@ public class ModelFirebase {
     }
 
     public static void loginUser(final String email, String password, final Listener<Boolean> listener){
-
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
         if (email != null && !email.equals("") && password != null && !password.equals("")){
             if (firebaseAuth.getCurrentUser() != null) {
                 firebaseAuth.signOut();
@@ -240,8 +242,6 @@ public class ModelFirebase {
     }
 
     public static void setUserAppData(String email) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();;
-        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         db.collection("userProfileData").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -258,7 +258,6 @@ public class ModelFirebase {
 
 
     public void uploadImage(Bitmap imageBmp, String name,  Model.UploadImageListener listener){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imagesRef = storage.getReference().child("images").child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageBmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
