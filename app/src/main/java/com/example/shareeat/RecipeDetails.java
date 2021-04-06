@@ -30,6 +30,7 @@ public class RecipeDetails extends Fragment {
     FirebaseUser user;
     String recipeId;
     Recipe rcp;
+    Recipe recDel;
     TextView recipeTitle;
     TextView nickname;
     TextView category;
@@ -52,6 +53,8 @@ public class RecipeDetails extends Fragment {
         detailRecipe = view.findViewById(R.id.deatils_detailRecipe);
         closeWindow = view.findViewById(R.id.details_closeImg);
         pictureRecipe = view.findViewById(R.id.details_image);
+        editRecipe = view.findViewById(R.id.details_editImg);
+        deleteRecipe = view.findViewById(R.id.details_deleteImg);
         recipeId = RecipeDetailsArgs.fromBundle(getArguments()).getRecipeId();
         edit_btn= view.findViewById(R.id.details_editImg);
         deleteRecipe= view.findViewById(R.id.details_deleteImg);
@@ -73,7 +76,6 @@ public class RecipeDetails extends Fragment {
                 if (recipe.getImageUrl() != null) {
                     Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(pictureRecipe);
                 }
-
                 if(rcp.getUserId().equals(user.getUid())){
                     edit_btn.setVisibility(View.VISIBLE);
                     deleteRecipe.setVisibility(View.VISIBLE);
@@ -98,6 +100,31 @@ public class RecipeDetails extends Fragment {
                 Navigation.findNavController(v).popBackStack();
             }
         });
+
+//        if (recipeId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            deleteRecipe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Model.instance.getRecipe(recipeId, new Model.GetRecipeListener() {
+                        @Override
+                        public void onComplete(Recipe recipe) {
+                            recDel = recipe;
+                            Model.instance.deleteRecipe(recDel, new Model.DeleteRecipeListener() {
+                                @Override
+                                public void onComplete() {
+                                    Navigation.findNavController(view).popBackStack();
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+//        }
+//        else
+//            deleteRecipe.setEnabled(false);
+        
         return view;
     }
 }

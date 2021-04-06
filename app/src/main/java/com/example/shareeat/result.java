@@ -93,8 +93,15 @@ public class result extends Fragment {
 
         });
 
-
-
+        adapter.setOnClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Recipe recipe = data.get(position);
+                resultDirections.ActionResultToRecipeDetails direction = resultDirections.actionResultToRecipeDetails (recipe.getId());
+                Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
+                Log.d("TAG", "row was clicked " + viewModel.getData().getValue().get(position).getTitleRecipe());
+            }
+        });
         return view;
     }
 
@@ -162,13 +169,14 @@ public class result extends Fragment {
         void setOnClickListener(OnItemClickListener listener){
             this.listener = listener;
         }
+
         @NonNull
         @Override
-        public result.RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            //View view = getLayoutInflater().inflate(R.layout.list_row, null);
+        public RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.list_row, parent, false);
-            result.RecipesViewHolder holder = new result.RecipesViewHolder(view);
+            RecipesViewHolder holder = new result.RecipesViewHolder(view);
             holder.listener = listener;
+
             return holder;
         }
 
