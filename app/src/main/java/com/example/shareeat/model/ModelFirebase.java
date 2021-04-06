@@ -58,6 +58,7 @@ public class ModelFirebase {
     public interface GetAllRecipesListener{
         void onComplete(List<Recipe> list);
     }
+
     public void addRecipe(Recipe recipe, final Model.AddRecipeListener listener) {
         db.collection("recipes")
                 .document(recipe.getId()).set(recipe.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -75,6 +76,7 @@ public class ModelFirebase {
             }
         });
     }
+
 
     public void getAllRecipes(Long lastUpdated, final GetAllRecipesListener listener) {
         Timestamp ts = new Timestamp(lastUpdated, 0);

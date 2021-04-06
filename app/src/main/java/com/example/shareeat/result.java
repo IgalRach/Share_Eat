@@ -67,6 +67,17 @@ public class result extends Fragment {
         adapter = new  RecipesAdapter();
         list.setAdapter(adapter);
 
+        adapter.setOnClickListener( new result.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(int position) {
+                Recipe recipe = data.get(position);
+                resultDirections.ActionResultToRecipeDetails direction = resultDirections.actionResultToRecipeDetails(recipe.getId());
+                Navigation.findNavController(getActivity(), R.id.result_recycler).navigate(direction);
+                Log.d("TAG", "row was clicked " + viewModel.getData().getValue().get(position).getTitleRecipe());
+            }
+        });
+
         liveData = viewModel.getRecipesByCategory(category);
         liveData.observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override

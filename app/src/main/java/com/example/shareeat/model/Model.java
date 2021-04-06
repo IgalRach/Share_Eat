@@ -114,6 +114,17 @@ public class Model {
         }.execute();
     }
 
+    public void updateRecipe(final Recipe recipe,final AddRecipeListener listener) {
+        modelFirebase.addRecipe(recipe, listener);
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                AppLocalDb.db.recipeDao().insertAll(recipe);
+                return "";
+            }
+        }.execute();
+    }
+
 
     public interface UpdateStudentListener extends AddRecipeListener {}
     public void updateStudent(final Recipe recipe,UpdateStudentListener listener) {

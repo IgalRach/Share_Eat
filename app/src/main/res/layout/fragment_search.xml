@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="24dp"
         android:autoText="false"
         android:background="#FFFFFF"
@@ -25,25 +25,9 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/search_search"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/regular"
-        android:hint="Search"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:text="Search" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/search_kosher"
@@ -98,7 +82,7 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/thin"
         android:text="Italian"
@@ -107,7 +91,7 @@
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toStartOf="@+id/search_french"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_search"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:rippleColor="#FFFFFF" />
 
     <Button
@@ -115,7 +99,7 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="60dp"
         android:fontFamily="@font/thin"
         android:text="French "
@@ -124,7 +108,7 @@
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/search_italian"
-        app:layout_constraintTop_toBottomOf="@+id/search_search" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/search_fish"
