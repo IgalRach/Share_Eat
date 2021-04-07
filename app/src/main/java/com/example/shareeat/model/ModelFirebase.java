@@ -133,6 +133,22 @@ public class ModelFirebase {
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     Toast.makeText(MyApplication.context, "User registered", Toast.LENGTH_SHORT).show();
+
+                    Map<String,Object> data = new HashMap<>();
+                    data.put("fullName", fullName);
+                    data.put("email", email);
+                    data.put("password", password);
+                    db.collection("userProfileData").document(email).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("TAG", "User has created in userProfileData Collection");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MyApplication.context, "Fails to create user and upload data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     //uploadUserData(fullName, email);
                     listener.onComplete();
                 }
@@ -143,10 +159,6 @@ public class ModelFirebase {
                     listener.onFail();
                 }
             });
-        }
-        else {
-            Toast.makeText(MyApplication.context, "Please fill all input fields and profile image", Toast.LENGTH_SHORT).show();
-            listener.onFail();
         }
     }
 
@@ -171,17 +183,17 @@ public class ModelFirebase {
 //                public void onComplete(@NonNull Task<Uri> task) {
 //                    if (task.isSuccessful()){
 
-                        Map<String,Object> data = new HashMap<>();
+
                         //data.put("profileImageUrl", task.getResult().toString());
+                        Map<String,Object> data = new HashMap<>();
                         data.put("fullName", fullName);
                         data.put("email", email);
                         //data.put("info", "NA");
                         db.collection("userProfileData").document(email).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                if (firebaseAuth.getCurrentUser() != null){
-                                    firebaseAuth.signOut();
-                                }
+                                Toast.makeText(MyApplication.context, "User has created in userProfileData Collection", Toast.LENGTH_SHORT).show();
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -202,6 +214,7 @@ public class ModelFirebase {
     }
 
     public static void loginUser(final String email, String password, final Listener<Boolean> listener){
+        Log.d("TAG", "LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
         if (email != null && !email.equals("") && password != null && !password.equals("")){
             if (firebaseAuth.getCurrentUser() != null) {
                 firebaseAuth.signOut();
