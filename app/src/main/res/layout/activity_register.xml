@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.675" />
+        app:layout_constraintVertical_bias="0.628" />
 
     <EditText
         android:id="@+id/register_fullName"
@@ -71,14 +71,13 @@
         android:id="@+id/register_login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
+        android:layout_marginBottom="132dp"
         android:fontFamily="@font/regular"
         android:text="Alreay signued up? Click Login"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -100,7 +99,6 @@
         android:id="@+id/register_register_btn"
         android:layout_width="162dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="4dp"
         android:fontFamily="@font/regular"
         android:text="Sign Up"
 

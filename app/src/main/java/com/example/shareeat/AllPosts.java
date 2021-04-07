@@ -2,45 +2,33 @@ package com.example.shareeat;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import com.example.shareeat.adapters.RecipesAdapter;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
-import com.squareup.picasso.Picasso;
-
 import java.util.LinkedList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class AllPosts extends Fragment {
 
     RecyclerView list;
-    List<Recipe> data = new LinkedList<Recipe>();
-    AllPosts.RecipesAdapter adapter;
+    RecipesAdapter adapter;
     RecipeViewModel viewModel;
-    LiveData<List<Recipe>> liveData;
-
+    SwipeRefreshLayout allPostsRefreshSwipe;
     Button addBtn;
-    SwipeRefreshLayout sref;
     ProgressBar pb;
 
     @Override
@@ -52,9 +40,10 @@ public class AllPosts extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //pb= view.findViewById(R.id.allpost_progressBar);
+
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_all_posts, container, false);
-        pb= view.findViewById(R.id.allpost_progressBar);
 
         // added button from all post to add post.
         addBtn= view.findViewById(R.id.AllPost_addBtn);
@@ -68,157 +57,45 @@ public class AllPosts extends Fragment {
         list = view.findViewById(R.id.main_recycler_v);
         list.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        list.setLayoutManager(layoutManager);
-
-        
-        adapter = new RecipesAdapter();
-        list.setAdapter(adapter);
-
-        adapter.setOnClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Recipe recipe = data.get(position);
-                AllPostsDirections.ActionAllPostsToRecipeDetails direction = AllPostsDirections.actionAllPostsToRecipeDetails(recipe.getId());
-                Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
-                Log.d("TAG", "row was clicked " + viewModel.getData().getValue().get(position).getTitleRecipe());
-            }
-        });
-
-        liveData = viewModel.getData();
-        liveData.observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
-            @Override
-            public void onChanged(List<Recipe> recipes) {
-                List<Recipe> reverseData = reverseData(recipes);
-                data = reverseData;
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.recipe_list_swipe);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        allPostsRefreshSwipe = view.findViewById(R.id.recipe_list_swipe);
+        allPostsRefreshSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
                     @Override
                     public void onComplete() {
-                        swipeRefreshLayout.setRefreshing(false);
+                        allPostsRefreshSwipe.setRefreshing(false);
                     }
                 });
 
             }
         });
 
-        reverseData(data);
-     //   reloadData();
+        viewModel.getData().observe(getViewLifecycleOwner(), recipeUpdateObserver);
         return view;
     }
 
-    private List<Recipe> reverseData(List<Recipe> recipes) {
-        List<Recipe> reversedData = new LinkedList<>();
-        for (Recipe recipe: recipes) {
-            reversedData.add(0, recipe);
-        }
-        return reversedData;
-    }
+    Observer<List<Recipe>> recipeUpdateObserver = new Observer<List<Recipe>>() {
+        @Override
+        public void onChanged(List<Recipe> recipeArrayList) {
+            List<Recipe> data = new LinkedList<Recipe>();
+                for (Recipe recipe: recipeArrayList)
+                    data.add(0, recipe);
 
-    public void reloadData(){
-        pb.setVisibility(View.VISIBLE);
-        addBtn.setEnabled(false);
-        Model.instance.refreshAllRecipes(new Model.GetAllRecipesListener() {
-            @Override
-            public void onComplete() {
-                pb.setVisibility(View.INVISIBLE);
-                addBtn.setEnabled(true);
-            }
-        });
-    }
-
-    /////////////////////////////////////////////////////////Class ViewHolder
-    class RecipesViewHolder extends RecyclerView.ViewHolder{
-
-        public OnItemClickListener listener;
-        CircleImageView profilePic;
-        TextView nickname;
-        TextView recipeTitle;
-        TextView recipeTV;
-        TextView category;
-        ImageView postImg;
-        int position;
-        Recipe myRecipe;
-
-        public RecipesViewHolder(@NonNull View itemView) {
-            super(itemView);
-            profilePic=itemView.findViewById(R.id.profile_profile_im);
-            nickname = itemView.findViewById(R.id.listRow_nickname);
-            recipeTitle=itemView.findViewById(R.id.listRow_titleRec);
-            category= itemView.findViewById(R.id.listRow_category);
-            postImg=itemView.findViewById(R.id.listRow_img);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+                recipeArrayList = data;
+            List<Recipe> finalRecipeArrayList = recipeArrayList;
+            adapter = new RecipesAdapter(getContext(), recipeArrayList, new RecipesAdapter.OnItemClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Log.d("Tag","position is: "+ position);
-                    listener.onItemClick(position);
+                public void onItemClick(int position) {
+                    Recipe rec = finalRecipeArrayList.get(position);
+                    String recipeId = rec.getId();
+                    AllPostsDirections.ActionAllPostsToRecipeDetails direction = AllPostsDirections.actionAllPostsToRecipeDetails(recipeId);
+                    Navigation.findNavController(getActivity(), R.id.mainactivity_navhost).navigate(direction);
+                    Log.d("TAG", "row was clicked " + recipeId);
                 }
             });
+            list.setLayoutManager(new LinearLayoutManager(getContext()));
+            list.setAdapter(adapter);
         }
-
-        public void bindData(Recipe recipe, int position) {
-            nickname.setText(recipe.getUserName());
-            recipeTitle.setText(recipe.getTitleRecipe());
-            category.setText(recipe.getCategory());
-            this.position= position;
-            myRecipe = recipe;
-            postImg.setImageResource(R.drawable.recipe_placeholder);
-            if(recipe.getImageUrl()!=null){
-                Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(postImg);
-            }
-        }
-    }
-
-    interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    /////////////////////////////////////////////////////////Class Adapter
-    class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
-
-        private OnItemClickListener listener;
-
-        void setOnClickListener(OnItemClickListener listener){
-            this.listener = listener;
-        }
-        @NonNull
-        @Override
-        public RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            //View view = getLayoutInflater().inflate(R.layout.list_row, null);
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.list_row, parent, false);
-            AllPosts.RecipesViewHolder holder = new AllPosts.RecipesViewHolder(view);
-            holder.listener = listener;
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
-            Recipe recipe = data.get(position);
-            holder.bindData(recipe, position);
-//            holder.nickname.setText(recipe.getUserName());
-//            holder.category.setText(recipe.getCategory());
-//            //holder.recipeTV.setText(recipe.getRecipe());
-//            holder.recipeTitle.setText(recipe.getTitleRecipe());
-
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-
-    }
-
+    };
 }
-

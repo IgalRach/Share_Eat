@@ -1,52 +1,36 @@
 package com.example.shareeat.model;
 
-
 import java.util.List;
-
-
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.*;
-import com.example.shareeat.model.ModelFirebase;
-
-
 import androidx.lifecycle.LiveData;
-
 import com.example.shareeat.MyApplication;
 
 public class Model {
      public static final Model instance = new Model();
      ModelFirebase modelFirebase = new ModelFirebase();
-     ModelSql modelSql = new ModelSql();
-  
+    LiveData<List<Recipe>> recipeList;
+
     private Model(){
     }
-
     public interface Listener<T>{
         void onComplete(T result);
     }
-
-    public interface GetAllRecipesListener2{
-        void onComplete(List<Recipe> myRecipes);
-    }
-
     public interface GetAllRecipesListener{
         void onComplete();
     }
 
-    LiveData<List<Recipe>> recipeList;
-
     public LiveData<List<Recipe>> getAllRecipes(){
-        recipeList = (LiveData<List<Recipe>>) AppLocalDb.db.recipeDao().getAllRecipes();
+        recipeList = AppLocalDb.db.recipeDao().getAllRecipes();
         refreshAllRecipes(null);
         return recipeList;
     }
 
     public LiveData<List<Recipe>> getRecipesByCategory(String category) {
-        recipeList= AppLocalDb.db.recipeDao().getRecipesByCategory(category);
+        recipeList = AppLocalDb.db.recipeDao().getRecipesByCategory(category);
         refreshAllRecipes(null);
         return recipeList;
     }
@@ -92,6 +76,7 @@ public class Model {
         });
     }
 
+    //Get
     public interface GetRecipeListener{
         void onComplete(Recipe recipe);
     }
@@ -99,7 +84,7 @@ public class Model {
         modelFirebase.getRecipe(id, listener);
     }
 
-
+    //Add
     public interface AddRecipeListener{
         void onComplete();
     }
@@ -114,6 +99,7 @@ public class Model {
         }.execute();
     }
 
+    //Update
     public void updateRecipe(final Recipe recipe,final AddRecipeListener listener) {
         modelFirebase.addRecipe(recipe, listener);
         new AsyncTask<String, String, String>() {
@@ -125,14 +111,7 @@ public class Model {
         }.execute();
     }
 
-
-    public interface UpdateStudentListener extends AddRecipeListener {}
-    public void updateStudent(final Recipe recipe,UpdateStudentListener listener) {
-        modelFirebase.updateRecipe(recipe, listener);
-        //modelSql.addRecipe(recipe, listener);
-    }
-
-
+    //Delete
     public interface DeleteRecipeListener extends AddRecipeListener {}
     public void deleteRecipe(Recipe recipe, DeleteRecipeListener listener){
         modelFirebase.deleteRecipe(recipe);
@@ -144,11 +123,10 @@ public class Model {
                 return "";
             }
         }.execute();
-
     }
 
+    //Upload
     public interface UploadImageListener extends Listener<String> {}
-
     public void uploadImage(Bitmap imageBmp, String name, final UploadImageListener listener){
         modelFirebase.uploadImage(imageBmp,name,listener);
     }
