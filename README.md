@@ -5,9 +5,11 @@ An android application-Cook book which any user can share his recipe with others
 
 ## Instructions
 
-1.**Authentication** - _Signin & Signup Pages_ 
-2.**AllPosts** - Shows all user's recipes
-3.**Profile** - _Shows only the recipes of the logged in user_
+1.**Authentication** - Login & Register Pages_ <br/>
+2.**AllPosts** - Shows all user's recipes by last created <br/>
+3.**AddPost** - Add a new recipe to the list
+4.**Profile** - _Shows only the recipes of the logged in user_ <br/>
+5.**Search** - _Choose recipes by categories_ <br/>
 
 ## Preview
 <img src="images/LoginScreenshot.png" width="300" > <img src="images/RegisterScreenShot.png" width="300" >
