@@ -1,18 +1,11 @@
 package com.example.shareeat.model;
 
-
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
-
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.example.shareeat.MyApplication;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,13 +13,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,9 +24,7 @@ import java.util.Map;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
-
 
 public class ModelFirebase {
 
@@ -117,10 +105,6 @@ public class ModelFirebase {
                 listener.onComplete(recipe);
             }
         });
-    }
-
-    public void updateRecipe(Recipe recipe, Model.UpdateStudentListener listener) {
-        addRecipe(recipe, listener);
     }
 
     public void delete(Recipe recipe, Model.DeleteRecipeListener listener) {

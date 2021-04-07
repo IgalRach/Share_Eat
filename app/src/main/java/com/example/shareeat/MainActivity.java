@@ -19,7 +19,6 @@ import java.util.List;
 public class MainActivity<OnOption> extends AppCompatActivity {
     NavController navController;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,14 +28,10 @@ public class MainActivity<OnOption> extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.mainactivity_navhost);
         NavigationUI.setupActionBarWithNavController(this,navController);
 
-
-
         //Navigation bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         NavigationUI.setupWithNavController(bottomNav,navController);
         //Navigation bar End
-
-
 
     }
 
