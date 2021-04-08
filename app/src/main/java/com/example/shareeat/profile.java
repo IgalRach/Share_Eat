@@ -21,13 +21,8 @@ import com.example.shareeat.adapters.RecipesAdapter;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
 import com.example.shareeat.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+//import com.google.firebase.auth.FirebaseAuth;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
@@ -36,6 +31,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.shareeat.model.ModelFirebase.setUserAppData;
+import static com.example.shareeat.model.ModelFirebase.signOut;
 
 public class profile extends Fragment {
     String userId;
@@ -61,27 +57,28 @@ public class profile extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId =/* FirebaseAuth.getInstance().getCurrentUser().getUid()*/ User.getInstance().id;
 
 
 
         profilePic= view.findViewById(R.id.profile_profile_im);
 
-       setUserAppData(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+       setUserAppData(User.getInstance().email);
         if (User.getInstance().profilePic != null){
             Picasso.get().load(User.getInstance().profilePic).noPlaceholder().into(profilePic);
 
         }
 
         nameUser = view.findViewById(R.id.profile_title);
-        nameUser.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        nameUser.setText(/*FirebaseAuth.getInstance().getCurrentUser().getDisplayName()*/User.getInstance().fullName);
 
         signOut = view.findViewById(R.id.signoutBtn);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                mAuth.signOut();
+//                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//                mAuth.signOut();
+                signOut();
 
                 startActivity(new Intent(getActivity(), login.class));
             }
