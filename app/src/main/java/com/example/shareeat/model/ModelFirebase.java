@@ -324,6 +324,10 @@ public class ModelFirebase {
         });
     }
 
+    public static void signOut(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+    }
 
 //public static void getImageFromFireBase(Recipe recipe){
 //
