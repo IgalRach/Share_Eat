@@ -18,9 +18,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import com.example.shareeat.adapters.RecipesAdapter;
 import com.example.shareeat.model.Model;
+import com.example.shareeat.model.ModelFirebase;
 import com.example.shareeat.model.Recipe;
+import com.example.shareeat.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.example.shareeat.model.ModelFirebase.recipesCounter;
+import static com.example.shareeat.model.ModelFirebase.updateUserProfile;
 
 public class AllPosts extends Fragment {
 
@@ -44,6 +51,8 @@ public class AllPosts extends Fragment {
 
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_all_posts, container, false);
+
+
 
         // added button from all post to add post.
         addBtn= view.findViewById(R.id.AllPost_addBtn);

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.example.shareeat.MyApplication;
+import com.example.shareeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +25,8 @@ import java.util.Map;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
 
 public class ModelFirebase {
@@ -31,6 +34,7 @@ public class ModelFirebase {
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    public static int recipesCounter=0;
 
     public void deleteRecipe(Recipe recipe) {
         db.collection("Deleted Recipes")
@@ -84,6 +88,8 @@ public class ModelFirebase {
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
+                        User.getInstance().counter=recipeList.size();
+                        Log.d("TAG","counterrrrrrrrrrr"+ User.getInstance().counter);
                         listener.onComplete(recipeList);
 
                     }
@@ -121,7 +127,7 @@ public class ModelFirebase {
         void onFail();
     }
 
-    public static void registerUserAccount(final String fullName, String password, final String email, final Listener<Boolean> listener) {
+    public static void registerUserAccount(final String fullName, String password, final String email,final String profilePic, final Listener<Boolean> listener) {
         if (firebaseAuth.getCurrentUser() != null){
             firebaseAuth.signOut();
         }
@@ -129,12 +135,15 @@ public class ModelFirebase {
                 fullName != null && !fullName.equals("") &&
                 password != null && !password.equals("") &&
                 email != null && !email.equals("")){
+            Map<String,Object> data = new HashMap<>();
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     Toast.makeText(MyApplication.context, "User registered", Toast.LENGTH_SHORT).show();
 
-                    Map<String,Object> data = new HashMap<>();
+                   // Map<String,Object> data = new HashMap<>();
+                    data.put("id",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    data.put("profilePic",null);
                     data.put("fullName", fullName);
                     data.put("email", email);
                     data.put("password", password);
@@ -142,6 +151,8 @@ public class ModelFirebase {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d("TAG", "User has created in userProfileData Collection");
+                            User user = new User(null,fullName,email,profilePic);
+                            setUserAppData(email);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -149,7 +160,7 @@ public class ModelFirebase {
                             Toast.makeText(MyApplication.context, "Fails to create user and upload data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-                    //uploadUserData(fullName, email);
+                   // CreateUserProfile(email,fullName,password,profilePic);
                     listener.onComplete();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -213,6 +224,63 @@ public class ModelFirebase {
 //        }
     }
 
+    public static void updateUserProfile(User user){
+
+        if(user.profilePic==null){
+            Log.d("TAG","hereeeeeeeeeeee222");
+            Task<QuerySnapshot> collection= db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        if(document.getData().get("id").equals(user.id)){
+                            if(document.getData().get("profilePic")!=null){
+                                String url= (String) document.getData().get("profilePic");
+                                user.profilePic=url;
+                            }
+                            db.collection("userProfileData")
+                                    .document(User.getInstance().email).set(user.toMap());
+                        }
+                    }
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+            }else{
+                db.collection("userProfileData")
+                        .document(User.getInstance().email).set(user.toMap());
+                Log.d("TAG","hereeeeeeeeeeee");
+            }
+
+    }
+
+    public static void CreateUserProfile(String email,String fullName, String password, String profilePic) {
+        Map<String, Object> data = new HashMap<>();
+        if (email != null)
+            data.put("email",email);
+        if (fullName != null)
+            data.put("fullName", fullName);
+        if (profilePic != null)
+            data.put("profilePic", profilePic);
+        if (password != null)
+            data.put("password", password);
+        Log.d("TAG","email: "+email);
+        Log.d("TAG","fullName: "+fullName);
+        Log.d("TAG","profilePic: "+profilePic);
+        Log.d("TAG","password: "+password);
+
+        db.collection("userProfileData").document(User.getInstance().email).set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(MyApplication.context, "Profile Updates Successfully " , Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     public static void loginUser(final String email, String password, final Listener<Boolean> listener){
         Log.d("TAG", "LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
         if (email != null && !email.equals("") && password != null && !password.equals("")){
@@ -240,11 +308,13 @@ public class ModelFirebase {
 
     }
 
+
     public static void setUserAppData(String email) {
         db.collection("userProfileData").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
+                    User.getInstance().profilePic=(String) task.getResult().get("profilePic");
                     User.getInstance().fullName = (String) task.getResult().get("fullName");
                     User.getInstance().password = (String) task.getResult().get("password");
                     User.getInstance().email = email;
@@ -255,6 +325,31 @@ public class ModelFirebase {
     }
 
 
+//public static void getImageFromFireBase(Recipe recipe){
+//
+//    Task<QuerySnapshot> collection= db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//        @Override
+//        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//            if (task.isSuccessful()) {
+//
+//                for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                    if(document.getData().get("id").equals(recipe.getUserId())){
+//                        String name= (String) document.getData().get("fullName");
+//                        viewHolder.nickname.setText(name);
+//                        if(document.getData().get("profilePic")!=null){
+//                            String url= (String) document.getData().get("profilePic");
+//                            Log.d("TAG", document.getId() + " => " + document.getData().get("id"));
+//                            Picasso.get().load(url).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
+//                        }
+//                    }
+//                }
+//            } else {
+//                Log.d("TAG", "Error getting documents: ", task.getException());
+//            }
+//        }
+//    });
+//}
 
     public void uploadImage(Bitmap imageBmp, String name,  Model.UploadImageListener listener){
         final StorageReference imagesRef = storage.getReference().child("images").child(name);
@@ -280,5 +375,7 @@ public class ModelFirebase {
             }
         });
     }
+
+
 
 }

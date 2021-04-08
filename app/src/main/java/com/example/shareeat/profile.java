@@ -20,12 +20,24 @@ import android.widget.TextView;
 import com.example.shareeat.adapters.RecipesAdapter;
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
+import com.example.shareeat.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+
 import java.util.LinkedList;
 import java.util.List;
 
-public class profile extends Fragment {
+import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.shareeat.model.ModelFirebase.setUserAppData;
+
+public class profile extends Fragment {
     String userId;
     RecyclerView listProfile;
     RecipesAdapter adapterProfile;
@@ -34,6 +46,7 @@ public class profile extends Fragment {
     Button signOut;
     Button editProfileBtn;
     TextView nameUser;
+    CircleImageView profilePic;
 
     public profile(){}
 
@@ -49,6 +62,16 @@ public class profile extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+
+        profilePic= view.findViewById(R.id.profile_profile_im);
+
+       setUserAppData(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        if (User.getInstance().profilePic != null){
+            Picasso.get().load(User.getInstance().profilePic).noPlaceholder().into(profilePic);
+
+        }
 
         nameUser = view.findViewById(R.id.profile_title);
         nameUser.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
@@ -88,11 +111,10 @@ public class profile extends Fragment {
 
             }
         });
-
+        Log.d("EDIT","profile "+User.getInstance().profilePic);
         viewModelProfile.getDataByUser(userId).observe(getViewLifecycleOwner(), recipeUpdateObserver);
         return view;
     }
-
 
     @Override
     public void onDetach() {

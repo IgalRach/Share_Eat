@@ -131,6 +131,10 @@ public class Model {
         modelFirebase.uploadImage(imageBmp,name,listener);
     }
 
+    public void updateUserProfile(User user) {
+        ModelFirebase.updateUserProfile(user);
+    }
+
 }
 
 

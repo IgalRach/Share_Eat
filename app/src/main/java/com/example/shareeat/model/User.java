@@ -1,10 +1,15 @@
 package com.example.shareeat.model;
 
+import android.content.Intent;
 import android.widget.EditText;
 
 import androidx.room.Entity;
 
+import com.google.firebase.firestore.FieldValue;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Entity
@@ -18,18 +23,36 @@ public class User {
     public String email;
     public String password;
     public String profilePic;
+    public int counter=0;
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("fullName", fullName);
+        result.put("email", email);
+        result.put("password", password);
+        result.put("profilePic", profilePic);
+        return result;
+    }
 
     public User(){
         id = null;
         fullName = null;
         email = null;
         password = null;
-
+        profilePic=null;
+        counter=0;
     }
 
-    public User(String fullNameInput, String passwordInput, String emailInput) {
+    public User(String Id,String fullNameInput, String emailInput,String pic) {
+        this.id=Id;
         this.fullName = fullNameInput;
-        this.password = passwordInput;
+        this.email = emailInput;
+        this.profilePic=pic;
+    }
+    public User(String Id,String fullNameInput, String emailInput) {
+        this.id=Id;
+        this.fullName = fullNameInput;
         this.email = emailInput;
     }
 

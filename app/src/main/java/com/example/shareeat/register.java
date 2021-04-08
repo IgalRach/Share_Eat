@@ -10,11 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.shareeat.model.ModelFirebase;
+import com.example.shareeat.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+
+import static com.example.shareeat.model.ModelFirebase.updateUserProfile;
 
 public class register extends AppCompatActivity {
 
@@ -23,6 +26,7 @@ public class register extends AppCompatActivity {
     EditText emailInput;
     Button registerBtn;
     TextView moveToLoginBtn;
+    String profilePic=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +40,12 @@ public class register extends AppCompatActivity {
         emailInput = findViewById(R.id.register_email);
         registerBtn = findViewById(R.id.register_register_btn);
 
+
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ModelFirebase.registerUserAccount(fullNameInput.getText().toString(), passwordInput.getText().toString(),
-                        emailInput.getText().toString(), new ModelFirebase.Listener<Boolean>() {
+                        emailInput.getText().toString(), profilePic,new ModelFirebase.Listener<Boolean>() {
                             @Override
                             public void onComplete() {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -57,13 +62,14 @@ public class register extends AppCompatActivity {
                                     }
                                 });
                             }
-
                             @Override
                             public void onFail() {
                             }
                         });
             }
         });
+
+
 
         moveToLoginBtn = findViewById(R.id.register_login_btn);
         moveToLoginBtn.setOnClickListener(new View.OnClickListener() {

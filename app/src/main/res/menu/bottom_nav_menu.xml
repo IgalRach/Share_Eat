@@ -10,10 +10,10 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="Search" />
 
-    <item
-        android:id="@+id/favorites"
-        android:icon="@drawable/ic_baseline_favorite_24"
-        android:title="@string/title_favorites" />
+<!--    <item-->
+<!--        android:id="@+id/favorites"-->
+<!--        android:icon="@drawable/ic_baseline_favorite_24"-->
+<!--        android:title="@string/title_favorites" />-->
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_round_person_24"
