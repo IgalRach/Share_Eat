@@ -1,34 +1,21 @@
 package com.example.shareeat.adapters;
 
 import android.content.Context;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.shareeat.R;
 import com.example.shareeat.model.Recipe;
 import com.example.shareeat.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-
+import static com.example.shareeat.model.ModelFirebase.getImageFromFireBase;
 
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -36,7 +23,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     final private OnItemClickListener listener;
     Context context;
     List<Recipe> recipeArrayList;
-    public static FirebaseFirestore db = FirebaseFirestore.getInstance();//*****************************
 
     public RecipesAdapter(Context context, List<Recipe> recipeArrayList, OnItemClickListener onClickListener) {
         this.context = context;
@@ -57,11 +43,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         Recipe recipe = recipeArrayList.get(position);
         RecipesViewHolder viewHolder = (RecipesViewHolder) holder;
-
+        getImageFromFireBase(recipe);
         viewHolder.profilePic.setImageResource(R.drawable.ic_round_person_grey);
-        viewHolder.nickname.setText(recipe.getUserName());
+        viewHolder.nickname.setText(User.getInstance().FBname);
         viewHolder.recipeTitle.setText(recipe.getTitleRecipe());
         viewHolder.category.setText(recipe.getCategory());
         viewHolder.postImg.setImageResource(R.drawable.icon_upload_image);
@@ -69,29 +56,37 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(viewHolder.postImg);
         }
 
+        if( User.getInstance().FBpic!=null){
+            Picasso.get().load(User.getInstance().FBpic).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
+        }
+        //Log.d("TAG","counter : "+User.getInstance().counter);
 
-        db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+       // Log.d("TAG","nnnnnnnnnnnnnnnnname : "+User.getInstance().FBname);
 
-                        if(document.getData().get("id").equals(recipe.getUserId())){
-                            String name= (String) document.getData().get("fullName");
-                            viewHolder.nickname.setText(name);
-                            if(document.getData().get("profilePic")!=null){
-                                String url= (String) document.getData().get("profilePic");
-                                Log.d("TAG", document.getId() + " => " + document.getData().get("id"));
-                                Picasso.get().load(url).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
-                            }
-                        }
-                    }
-                } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
-                }
-            }
-        });
+
+//        db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                            User.getInstance().counter++;
+//                        if(document.getData().get("id").equals(recipe.getUserId())){
+//                            String name= (String) document.getData().get("fullName");
+//                            viewHolder.nickname.setText(name);
+//                            if(document.getData().get("profilePic")!=null){
+//                                String url= (String) document.getData().get("profilePic");
+//                                Log.d("TAG", document.getId() + " => " + document.getData().get("id"));
+//                                Picasso.get().load(url).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    Log.d("TAG", "Error getting documents: ", task.getException());
+//                }
+//            }
+//        });
 
     }
 

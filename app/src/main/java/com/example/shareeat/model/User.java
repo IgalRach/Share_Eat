@@ -23,7 +23,10 @@ public class User {
     public String email;
     public String password;
     public String profilePic;
-    public int counter=0;
+
+    public boolean hasPic=false;
+    public String FBpic;
+    public String FBname;
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -41,7 +44,10 @@ public class User {
         email = null;
         password = null;
         profilePic=null;
-        counter=0;
+
+        hasPic=false;
+        FBname=null;
+        FBpic=null;
     }
 
     public User(String Id,String fullNameInput, String emailInput,String pic) {

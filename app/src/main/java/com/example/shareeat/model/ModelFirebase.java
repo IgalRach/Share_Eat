@@ -88,8 +88,6 @@ public class ModelFirebase {
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
-                        User.getInstance().counter=recipeList.size();
-                        Log.d("TAG","counterrrrrrrrrrr"+ User.getInstance().counter);
                         listener.onComplete(recipeList);
 
                     }
@@ -329,31 +327,34 @@ public class ModelFirebase {
         mAuth.signOut();
     }
 
-//public static void getImageFromFireBase(Recipe recipe){
-//
-//    Task<QuerySnapshot> collection= db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//        @Override
-//        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//            if (task.isSuccessful()) {
-//
-//                for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                    if(document.getData().get("id").equals(recipe.getUserId())){
-//                        String name= (String) document.getData().get("fullName");
-//                        viewHolder.nickname.setText(name);
-//                        if(document.getData().get("profilePic")!=null){
-//                            String url= (String) document.getData().get("profilePic");
-//                            Log.d("TAG", document.getId() + " => " + document.getData().get("id"));
-//                            Picasso.get().load(url).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
-//                        }
-//                    }
-//                }
-//            } else {
-//                Log.d("TAG", "Error getting documents: ", task.getException());
-//            }
-//        }
-//    });
-//}
+public static void getImageFromFireBase(Recipe recipe){
+
+    Task<QuerySnapshot> collection= db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                        User.getInstance().hasPic=false;
+                    if(document.getData().get("id").equals(recipe.getUserId())){
+                        String name= (String) document.getData().get("fullName");
+                        User.getInstance().FBname=name;
+                        //viewHolder.nickname.setText(name);
+                        if(document.getData().get("profilePic")!=null){
+                            User.getInstance().hasPic=true;
+                            String url= (String) document.getData().get("profilePic");
+                            User.getInstance().FBpic=url;
+                            Log.d("TAG", document.getId() + " => " + document.getData().get("id"));
+                            //Picasso.get().load(url).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
+                        }
+                    }
+                }
+            } else {
+                Log.d("TAG", "Error getting documents: ", task.getException());
+            }
+        }
+    });
+}
 
     public void uploadImage(Bitmap imageBmp, String name,  Model.UploadImageListener listener){
         final StorageReference imagesRef = storage.getReference().child("images").child(name);

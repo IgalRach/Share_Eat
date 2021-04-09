@@ -6,8 +6,12 @@ import android.os.AsyncTask;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import com.example.shareeat.MyApplication;
+
+import static com.example.shareeat.model.ModelFirebase.getImageFromFireBase;
 
 public class Model {
      public static final Model instance = new Model();
@@ -48,6 +52,7 @@ public class Model {
 
         //get all updated record from firebase from the last updated
         modelFirebase.getAllRecipes(lastUpdated, new ModelFirebase.GetAllRecipesListener() {
+
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onComplete(final List<Recipe> data) {
