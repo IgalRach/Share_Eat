@@ -11,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.shareeat.R;
 import com.example.shareeat.model.Recipe;
-import com.example.shareeat.model.User;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
-import static com.example.shareeat.model.ModelFirebase.getImageFromFireBase;
 
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -46,9 +44,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         Recipe recipe = recipeArrayList.get(position);
         RecipesViewHolder viewHolder = (RecipesViewHolder) holder;
-        getImageFromFireBase(recipe);
+       // getImageFromFireBase(recipe);
         viewHolder.profilePic.setImageResource(R.drawable.ic_round_person_grey);
-        viewHolder.nickname.setText(User.getInstance().FBname);
+        viewHolder.nickname.setText(recipe.getUserName());
         viewHolder.recipeTitle.setText(recipe.getTitleRecipe());
         viewHolder.category.setText(recipe.getCategory());
         viewHolder.postImg.setImageResource(R.drawable.icon_upload_image);
@@ -56,38 +54,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Picasso.get().load(recipe.getImageUrl()).placeholder(R.drawable.recipe_placeholder).into(viewHolder.postImg);
         }
 
-        if( User.getInstance().FBpic!=null){
-            Picasso.get().load(User.getInstance().FBpic).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
+        if( recipe.getUserPic()!=null){
+            Picasso.get().load(recipe.getUserPic()).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
         }
-        //Log.d("TAG","counter : "+User.getInstance().counter);
-
-
-       // Log.d("TAG","nnnnnnnnnnnnnnnnname : "+User.getInstance().FBname);
-
-
-//        db.collection("userProfileData").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                            User.getInstance().counter++;
-//                        if(document.getData().get("id").equals(recipe.getUserId())){
-//                            String name= (String) document.getData().get("fullName");
-//                            viewHolder.nickname.setText(name);
-//                            if(document.getData().get("profilePic")!=null){
-//                                String url= (String) document.getData().get("profilePic");
-//                                Log.d("TAG", document.getId() + " => " + document.getData().get("id"));
-//                                Picasso.get().load(url).placeholder(R.drawable.ic_round_person_grey).into(viewHolder.profilePic);
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    Log.d("TAG", "Error getting documents: ", task.getException());
-//                }
-//            }
-//        });
-
     }
 
 
@@ -108,7 +77,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(itemView);
             itemView.setOnClickListener(this);
 
-            profilePic=itemView.findViewById(R.id.editprofile_profile_im);
+            profilePic=itemView.findViewById(R.id.detailsprofile_profile_im);
             nickname = itemView.findViewById(R.id.listRow_nickname);
             recipeTitle=itemView.findViewById(R.id.listRow_titleRec);
             category= itemView.findViewById(R.id.listRow_category);

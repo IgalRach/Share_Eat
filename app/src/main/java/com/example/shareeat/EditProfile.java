@@ -11,11 +11,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +29,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.squareup.picasso.Picasso;
-
-import java.io.FileDescriptor;
-import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,7 +55,7 @@ public class EditProfile extends Fragment {
         view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        profilePic=view.findViewById(R.id.editprofile_profile_im);
+        profilePic=view.findViewById(R.id.detailsprofile_profile_im);
         if (User.getInstance().profilePic != null) {
             Picasso.get().load(User.getInstance().profilePic).noPlaceholder().into(profilePic);
         }
@@ -102,6 +98,10 @@ public class EditProfile extends Fragment {
     private void updateUserProfile() {
         UserProfileChangeRequest profileUpdates;
         if (isExist){
+            profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(newFullName.getText().toString())
+                    .setPhotoUri(selectedImage)
+                    .build();
             Model.instance.uploadImage(bitmapSelectedImage, user.getEmail(), new Model.UploadImageListener() {
                 @Override
                 public void onComplete(String url) {
@@ -109,16 +109,13 @@ public class EditProfile extends Fragment {
                         displayFailedError();
                     }
                     else{
-                        currentUser= new User( user.getUid(), user.getDisplayName().toString(),user.getEmail(),url);
+                        currentUser= new User( user.getUid(),newFullName.getText().toString(),user.getEmail(),url);
                         Model.instance.updateUserProfile(currentUser);
                     }
 
                 }
             });
-            profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString())
-                    .setPhotoUri(selectedImage)
-                    .build();
+
         }
         else{
             profileUpdates = new UserProfileChangeRequest.Builder()
@@ -131,8 +128,14 @@ public class EditProfile extends Fragment {
         user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                    Navigation.findNavController(view).popBackStack();
+                if (task.isSuccessful()){
+                    NavController navCtrl = Navigation.findNavController(view);
+                    navCtrl.popBackStack();
+                    navCtrl.popBackStack();
+                }
+                   // Navigation.findNavController(view).navigate(R.id.profile);
+
+
             }
         });
 

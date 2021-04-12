@@ -48,7 +48,7 @@
                 android:textColor="#A6AA82"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editprofile_profile_im"
+                app:layout_constraintStart_toEndOf="@+id/detailsprofile_profile_im"
                 app:layout_constraintTop_toBottomOf="@+id/listRow_titleRec" />
 
 
@@ -64,7 +64,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editprofile_profile_im"
+                app:layout_constraintStart_toEndOf="@+id/detailsprofile_profile_im"
                 app:layout_constraintTop_toBottomOf="@+id/listRow_nickname"
                 tools:ignore="MissingConstraints" />
 
@@ -96,12 +96,12 @@
                 android:text="Nickname"
                 android:textColor="#FFC107"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/editprofile_profile_im"
+                app:layout_constraintStart_toEndOf="@+id/detailsprofile_profile_im"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/editprofile_profile_im"
+                android:id="@+id/detailsprofile_profile_im"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"

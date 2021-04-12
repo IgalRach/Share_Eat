@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.Recipe;
+import com.example.shareeat.model.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +40,7 @@ import java.util.UUID;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.example.shareeat.model.ModelFirebase.getImageFromFireBase;
 
 
 public class AddPost extends Fragment {
@@ -71,6 +73,7 @@ public class AddPost extends Fragment {
         pb.setVisibility(View.INVISIBLE);
         avatarImageView.setVisibility(View.INVISIBLE);
 
+        getImageFromFireBase(User.getInstance().id);
         //category spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -140,6 +143,8 @@ public class AddPost extends Fragment {
                 recipe.setUserName(user.getDisplayName());
             }
 
+
+            recipe.setUserPic(User.getInstance().FBpic);
 
             addBtn.setEnabled(false);
             cancelBtn.setEnabled((false));

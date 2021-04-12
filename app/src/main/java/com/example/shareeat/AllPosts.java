@@ -26,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.example.shareeat.model.ModelFirebase.recipesCounter;
-import static com.example.shareeat.model.ModelFirebase.updateUserProfile;
 
 public class AllPosts extends Fragment {
 

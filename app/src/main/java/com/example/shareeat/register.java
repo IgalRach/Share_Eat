@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-import static com.example.shareeat.model.ModelFirebase.updateUserProfile;
 
 public class register extends AppCompatActivity {
 

@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RecipeDetails extends Fragment {
 
     FirebaseUser user;
@@ -29,7 +31,7 @@ public class RecipeDetails extends Fragment {
     ImageView edit_btn;
     ImageView deleteRecipe;
     ImageView closeWindow;
-
+    CircleImageView profilePic;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class RecipeDetails extends Fragment {
         recipeId = RecipeDetailsArgs.fromBundle(getArguments()).getRecipeId();
         edit_btn= view.findViewById(R.id.details_editImg);
         deleteRecipe= view.findViewById(R.id.details_deleteImg);
-
+        profilePic= view.findViewById(R.id.detailsprofile_profile_im);
         edit_btn.setVisibility(View.INVISIBLE);
         deleteRecipe.setVisibility(View.INVISIBLE);
 
@@ -65,6 +67,10 @@ public class RecipeDetails extends Fragment {
                 if(rcp.getUserId().equals(user.getUid())){
                     edit_btn.setVisibility(View.VISIBLE);
                     deleteRecipe.setVisibility(View.VISIBLE);
+                }
+
+                if( recipe.getUserPic()!=null){
+                    Picasso.get().load(recipe.getUserPic()).placeholder(R.drawable.ic_round_person_grey).into(profilePic);
                 }
             }
         });

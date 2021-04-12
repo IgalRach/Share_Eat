@@ -30,6 +30,9 @@ public class Recipe {
     private String userId;
     private String userName;
 
+
+    private String userPic;
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("id", id);
@@ -41,6 +44,20 @@ public class Recipe {
         result.put("imageUrl", imageUrl);
         result.put("userId", userId);
         result.put("userName", userName);
+        result.put("userPic",userPic);
+        return result;
+    }
+
+    public Map<String, Object> toMapUpdateUser() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("titleRecipe", titleRecipe);
+        result.put("category", category);
+        result.put("recipe", recipe);
+        result.put("imageUrl", imageUrl);
+        result.put("userId", userId);
+        result.put("userName", userName);
+        result.put("userPic",userPic);
         return result;
     }
 
@@ -56,8 +73,18 @@ public class Recipe {
         Timestamp ts1 = (Timestamp) map.get("lastUpdated");
         CreatedDate = ts.getSeconds();
         UpdatedDate = ts1.getSeconds();
+        userPic= (String) map.get("userPic");
     }
 
+
+
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
+    }
 
 
     public String getImageUrl() {
