@@ -23,6 +23,7 @@ import com.example.shareeat.model.Recipe;
 import com.example.shareeat.model.User;
 //import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
@@ -70,7 +71,7 @@ public class profile extends Fragment {
         }
 
         nameUser = view.findViewById(R.id.profile_title);
-        nameUser.setText(/*FirebaseAuth.getInstance().getCurrentUser().getDisplayName()*/User.getInstance().fullName);
+        nameUser.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName()/*User.getInstance().fullName*/);
 
         signOut = view.findViewById(R.id.signoutBtn);
         signOut.setOnClickListener(new View.OnClickListener() {

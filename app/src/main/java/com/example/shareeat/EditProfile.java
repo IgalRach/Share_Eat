@@ -38,7 +38,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditProfile extends Fragment {
 
-
     CircleImageView profilePic;
     EditText newFullName;
     View view;
@@ -47,7 +46,8 @@ public class EditProfile extends Fragment {
     Bitmap bitmapSelectedImage;
     boolean isExist=false;
     User currentUser;
-
+    CircleImageView p;
+    UserProfileChangeRequest profileUpdates;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,6 +67,7 @@ public class EditProfile extends Fragment {
         Button save = view.findViewById(R.id.editProfile_Save_Btn);
         Button cancel = view.findViewById(R.id.editProfile_cencel_Btn);
 
+        p=view.findViewById(R.id.profile_profile_im);
 
 
 
@@ -96,11 +97,10 @@ public class EditProfile extends Fragment {
 
 
     private void updateUserProfile() {
-        UserProfileChangeRequest profileUpdates;
+
         if (isExist){
             profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString())
-                    .setPhotoUri(selectedImage)
+                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(selectedImage)
                     .build();
             Model.instance.uploadImage(bitmapSelectedImage, user.getEmail(), new Model.UploadImageListener() {
                 @Override
@@ -111,6 +111,7 @@ public class EditProfile extends Fragment {
                     else{
                         currentUser= new User( user.getUid(),newFullName.getText().toString(),user.getEmail(),url);
                         Model.instance.updateUserProfile(currentUser);
+
                     }
 
                 }
@@ -118,24 +119,23 @@ public class EditProfile extends Fragment {
 
         }
         else{
-            profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString())
-                    .build();
             currentUser= new User( user.getUid(),newFullName.getText().toString(),user.getEmail());
             Model.instance.updateUserProfile(currentUser);
+            profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(selectedImage)
+                    .build();
 
         }
         user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
+                    //Navigation.findNavController(view).navigate( R.id.profile);
                     NavController navCtrl = Navigation.findNavController(view);
                     navCtrl.popBackStack();
                     navCtrl.popBackStack();
+                    //navCtrl.navigateUp();
                 }
-                   // Navigation.findNavController(view).navigate(R.id.profile);
-
-
             }
         });
 
@@ -164,6 +164,7 @@ public class EditProfile extends Fragment {
             }
         });
         builder.show();
+
     }
 
     @Override
