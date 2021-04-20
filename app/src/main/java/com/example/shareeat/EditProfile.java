@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -42,8 +43,8 @@ public class EditProfile extends Fragment {
     EditText newFullName;
     View view;
     FirebaseUser user;
-    Uri selectedImage;
-    Bitmap bitmapSelectedImage;
+  //  Uri selectedImage;
+   // Bitmap bitmapSelectedImage;
     boolean isExist=false;
     User currentUser;
     CircleImageView p;
@@ -100,9 +101,10 @@ public class EditProfile extends Fragment {
 
         if (isExist){
             profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(selectedImage)
+                    .setDisplayName(newFullName.getText().toString())
                     .build();
-            Model.instance.uploadImage(bitmapSelectedImage, user.getEmail(), new Model.UploadImageListener() {
+            BitmapDrawable drawable = (BitmapDrawable) profilePic.getDrawable();
+            Model.instance.uploadImage(/*bitmapSelectedImage*/drawable.getBitmap(), user.getEmail(), new Model.UploadImageListener() {
                 @Override
                 public void onComplete(String url) {
                     if(url==null){
@@ -122,7 +124,7 @@ public class EditProfile extends Fragment {
             currentUser= new User( user.getUid(),newFullName.getText().toString(),user.getEmail());
             Model.instance.updateUserProfile(currentUser);
             profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(selectedImage)
+                    .setDisplayName(newFullName.getText().toString())
                     .build();
 
         }
@@ -173,13 +175,13 @@ public class EditProfile extends Fragment {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        bitmapSelectedImage = (Bitmap) data.getExtras().get("data");
+                        Bitmap bitmapSelectedImage = (Bitmap) data.getExtras().get("data");
                         profilePic.setImageBitmap(bitmapSelectedImage);
                     }
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
-                         selectedImage = data.getData();
+                         Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             Cursor cursor = getActivity().getContentResolver().query(selectedImage,

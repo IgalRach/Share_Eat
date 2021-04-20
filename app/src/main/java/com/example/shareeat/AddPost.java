@@ -193,7 +193,7 @@ public class AddPost extends Fragment {
         builder.show();
     }
 
-    private void editImage() {
+    public void editImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose your recipe picture");
