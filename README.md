@@ -14,7 +14,7 @@ An android application-Cook book which any user can share his recipe with others
 ## Preview
 <img src="images/Screenshot_1619095972.png" width="300" > <img src="images/Screenshot_1619095974.png" width="300" > <img src="images/Screenshot_1619095125.png" width="300" >
 
-<img src="images/Screenshot_1619095113.png" width="300" > <img src="images/Screenshot_1619095122.png" width="300" > <img src="images/Screenshot_1619092957.png" width="300" >
+<img src="images/Screenshot_1619104179.png" width="300" > <img src="images/Screenshot_1619095122.png" width="300" > <img src="images/Screenshot_1619092957.png" width="300" >
 
 ## Developed By:
 * _Omri Yehidi_ - [LinkedIn](https://www.linkedin.com/in/omriyehidi/)
