@@ -40,12 +40,14 @@ public class result extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //pb= view.findViewById(R.id.result_pb);
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_result, container, false);
         category = resultArgs.fromBundle(getArguments()).getCategory();
         Log.d("TAG","arg_category: "+category);
+
+        pb= view.findViewById(R.id.result_pb);
+        pb.setVisibility(View.INVISIBLE);
 
         noResults= view.findViewById(R.id.result_txtView);
         noResults.setVisibility(View.INVISIBLE);

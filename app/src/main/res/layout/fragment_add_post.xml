@@ -52,6 +52,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
+                android:background="@drawable/style_recipedetails"
+                android:dropDownSelector="@drawable/background2"
                 android:scrollbarSize="10dp"
                 android:spinnerMode="dropdown"
                 app:layout_constraintEnd_toEndOf="parent"

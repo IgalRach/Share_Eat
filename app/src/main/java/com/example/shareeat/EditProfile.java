@@ -10,16 +10,19 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.shareeat.model.Model;
 import com.example.shareeat.model.User;
@@ -29,6 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.squareup.picasso.Picasso;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,12 +48,14 @@ public class EditProfile extends Fragment {
     EditText newFullName;
     View view;
     FirebaseUser user;
-    Uri selectedImage;
-    Bitmap bitmapSelectedImage;
+
+    Uri postImgUri;
+    Bitmap postImgBitmap;
+
     boolean isExist=false;
     User currentUser;
-    CircleImageView p;
     UserProfileChangeRequest profileUpdates;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,10 +74,6 @@ public class EditProfile extends Fragment {
         Button updateProfilePic=view.findViewById(R.id.editProfile_upload_Btn);
         Button save = view.findViewById(R.id.editProfile_Save_Btn);
         Button cancel = view.findViewById(R.id.editProfile_cencel_Btn);
-
-        p=view.findViewById(R.id.profile_profile_im);
-
-
 
         updateProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,9 +104,9 @@ public class EditProfile extends Fragment {
 
         if (isExist){
             profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(selectedImage)
+                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(postImgUri)
                     .build();
-            Model.instance.uploadImage(bitmapSelectedImage, user.getEmail(), new Model.UploadImageListener() {
+            Model.instance.uploadImage(postImgBitmap, user.getEmail(), new Model.UploadImageListener() {
                 @Override
                 public void onComplete(String url) {
                     if(url==null){
@@ -122,7 +126,7 @@ public class EditProfile extends Fragment {
             currentUser= new User( user.getUid(),newFullName.getText().toString(),user.getEmail());
             Model.instance.updateUserProfile(currentUser);
             profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(selectedImage)
+                    .setDisplayName(newFullName.getText().toString()).setPhotoUri(postImgUri)
                     .build();
 
         }
@@ -155,8 +159,9 @@ public class EditProfile extends Fragment {
                     startActivityForResult(takePicture, 0);
                     isExist=true;
                 } else if (options[item].equals("Choose from Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto , 1);
+                    Intent openGalleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    openGalleryIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(openGalleryIntent, 1);
                     isExist=true;
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -168,35 +173,32 @@ public class EditProfile extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_CANCELED) {
-            switch (requestCode) {
-                case 0:
-                    if (resultCode == RESULT_OK && data != null) {
-                        bitmapSelectedImage = (Bitmap) data.getExtras().get("data");
-                        profilePic.setImageBitmap(bitmapSelectedImage);
-                    }
-                    break;
-                case 1:
-                    if (resultCode == RESULT_OK && data != null) {
-                         selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                profilePic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-                            }
-                        }
-                    }
-                    break;
-            }
+        if(data.getData() != null && data != null && resultCode == RESULT_OK) {
+            postImgUri = data.getData();
+            profilePic.setImageURI(postImgUri);
+            postImgBitmap = uriToBitmap(postImgUri);
         }
+        else {
+            Toast.makeText(getActivity(), "No image was selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private Bitmap uriToBitmap(Uri selectedFileUri) {
+
+        try {
+            ParcelFileDescriptor parcelFileDescriptor = getContext().getContentResolver().openFileDescriptor(selectedFileUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            return image;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void displayFailedError() {
